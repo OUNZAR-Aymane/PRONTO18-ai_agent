@@ -1,19 +1,15 @@
 from langchain_mistralai.embeddings import MistralAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.prompts import ChatPromptTemplate
-from langchain.chains import create_retrieval_chain
 from langchain_community.document_loaders import PyPDFLoader
-import time
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import AutoTokenizer
-
 import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
+workspace_path = os.getcwd()  # Get current working directory
+faiss_index_path = os.path.join(workspace_path, "faiss_index")
 
 def load_and_split(pdf):
     loader = PyPDFLoader(pdf)
@@ -25,12 +21,24 @@ def load_and_split(pdf):
 def embedd(chunks):
     # Define the embedding model
     embeddings = MistralAIEmbeddings(model="mistral-embed", mistral_api_key="wNVyBAARBAah94Jwl9WtLFpGT7sM9xFj")
-    # Create the vector store 
-    vector = FAISS.from_documents(chunks, embeddings)
+    if not os.path.exists(faiss_index_path):
+        # Create the vector store 
+        vector = FAISS.from_documents(chunks, embeddings)
+    else:
+        vector = FAISS.load_local(faiss_index_path, embeddings=embeddings, allow_dangerous_deserialization=True)
+        vector.add_documents(chunks)
     vector.save_local("faiss_index")
 
 
+
 if __name__ == '__main__' :
-    chunks = load_and_split(r"C:\Users\ounza\IMT\Semestre 6\PRONTO\ai-agent\docs\Le-coronographe-de-Lyot.pdf")
-    print(chunks)
-    embedd(chunks)
+    for filename in os.listdir("docs"):
+        if filename.endswith(".pdf"):  # Check if it's a PDF file
+            pdf_path = os.path.join("docs", filename)  # Full path to PDF
+            print(f"Processing: {filename}...")
+            chunks = load_and_split(pdf_path)
+            try:
+                embedd(chunks)
+                print("Done!")
+            except Exception as e:
+                print("An error occured :",e)

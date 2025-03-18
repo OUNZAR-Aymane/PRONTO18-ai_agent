@@ -5,26 +5,29 @@ from langchain.chains import create_retrieval_chain
 from langchain_community.vectorstores import FAISS
 from langchain_mistralai.embeddings import MistralAIEmbeddings
 import os
-from dotenv import load_dotenv
+
+
+workspace_path = os.getcwd()  # Get current working directory
+faiss_index_path = os.path.join(workspace_path, "faiss_index")
 
 embedding_function = MistralAIEmbeddings(model="mistral-embed", mistral_api_key="wNVyBAARBAah94Jwl9WtLFpGT7sM9xFj")
-vector = FAISS.load_local(r"C:\Users\ounza\IMT\Semestre 6\PRONTO\ai-agent\faiss_index\index.faiss", embeddings=embedding_function, allow_dangerous_deserialization=True)
+vector = FAISS.load_local(faiss_index_path, embeddings=embedding_function, allow_dangerous_deserialization=True)
 
 # Define a retriever interface
 retriever = vector.as_retriever()
 # Define LLM
 model = ChatMistralAI(mistral_api_key="wNVyBAARBAah94Jwl9WtLFpGT7sM9xFj")
 # Define prompt template
-prompt = ChatPromptTemplate.from_template("""Answer the following question based only on the provided context:
+prompt = ChatPromptTemplate.from_template("""Tu es un ChatBot qui va répondre aux questions des utilisateurs d'observatoire astronomique de l'école IMT ATlantique campus de Brest. Tu répond seuelemnt sur la base des données que tu as. Tu tu ne trouve pas la réponse, dit le. Répond toujours en français, même si les données sont en anglais.
 
 <context>
-{context}
+"{context}"
 </context>
 
-Question: {Comment}""")
+Question: {input}""")
 
 # Create a retrieval chain to answer questions
 document_chain = create_stuff_documents_chain(model, prompt)
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
-response = retrieval_chain.invoke({"input": "Comment marche le coronographe de Lyot?"})
+response = retrieval_chain.invoke({"input": "Comment configurer la carte cu ciel dans le logiciel prism"})
 print(response["answer"])
