@@ -39,7 +39,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Chatbot - Interface d'entrée de texte
-user_input = st.chat_input("Pose ta question ici:")
+user_input = st.chat_input("Pose ta question ici...")
 
 if user_input:
     with st.chat_message("user"):
