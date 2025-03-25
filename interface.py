@@ -45,8 +45,7 @@ if user_input:
     with st.chat_message("user"):
         st.write(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
-    # Ici, tu pourrais ajouter un modèle NLP pour répondre à la question ou simuler une réponse intelligente.
-    with st.spinner("Réponse en cours de génération"):
+    with st.spinner("Réponse en cours de génération..."):
         response = get_response(user_input,st.session_state['chat_history'])
         st.session_state["chat_history"].append(HumanMessage(content=user_input))
         st.session_state["chat_history"].append(AIMessage(content=response))
