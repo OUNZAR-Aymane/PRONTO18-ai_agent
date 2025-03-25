@@ -51,10 +51,11 @@ def create_prompt():
     last question, but referencing previous messages (chat history).
     """
     system_instruction = """Tu es un ChatBot qui va répondre aux questions des utilisateurs d'observatoire astronomique de l'école IMT ATlantique campus de Brest.\
-          Si l'utilisateur pose des questions sur l'observatoire. Tu doit répondre en se basant sur les données fournis.\
-          Si tu n'arrive pas a trouver l'onformations tu dit que tu ne sait pas.\
-          Répond toujours en français.\
-          Utiliser le context : {context}"""
+        Si l'utilisateur pose des questions sur l'observatoire. Tu doit répondre en se basant sur les données fournis.\
+        Écris toujours les formules mathématiques en les entourant de $ pour qu'elles soient compilées en format LaTeX. Au lieu d'écrire [formule en LaTex] écrit $ formule en LaTex $\
+        Si tu n'arrive pas a trouver l'onformations tu dit que tu ne sait pas.\
+        Répond toujours en français.\
+        Utiliser le context : {context}"""
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_instruction),
@@ -75,6 +76,3 @@ def get_response(user_input,chat_history):
         except :
             continue
         break
-
-
-print(get_response("bonjour",[]))
