@@ -20,7 +20,7 @@ def load_and_split(pdf):
 
 def embedd(chunks):
     # Define the embedding model
-    embeddings = MistralAIEmbeddings(model="mistral-embed", mistral_api_key="wNVyBAARBAah94Jwl9WtLFpGT7sM9xFj")
+    embeddings = MistralAIEmbeddings(model="mistral-embed", mistral_api_key="MISTRAL_API_KEY")
     if not os.path.exists(faiss_index_path):
         # Create the vector store 
         vector = FAISS.from_documents(chunks, embeddings)
