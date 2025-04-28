@@ -84,8 +84,21 @@ cd ai-agent
 ```
 
 ### 3. Configurer les variables d'environnement
-Skip
+#### Créer une clé API de Mistral 
+1. Accéder à [https://console.mistral.ai/home](https://console.mistral.ai/home). Créer un compte ou ce connecter avec un compte google.
 
+![SideBar](assets\images\sidebar.png)
+
+2. Accéder à `Clés API`. *
+3. Il faudra choisir un plan pour activer un forfait. Choisissez le plan Experiment (Gratuit ).
+4. Accépter les conditions et vérifier voter numéro de téléphone.
+![alt text](assets\images\api_key.png)
+5. Clicker sur `Créer une nouvelle clé`. Choisir un nom pour la clé et une date d'expiration (Jamais).
+6. Copier la clé et garder la.
+#### Executer la commande 
+```bash
+echo "MISTRAL_API_KEY="Votre clé API ici" > .env
+```
 ### 4. Construction des images Docker
 
 ```bash
