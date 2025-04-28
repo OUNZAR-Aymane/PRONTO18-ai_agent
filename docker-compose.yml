@@ -1,0 +1,30 @@
+services:
+  dev:
+    build: .
+    volumes:
+      - .:/workspace
+    env_file: .env
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+  jupyter:
+    build: .
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    volumes:
+      - .:/workspace
+    env_file: .env
+    working_dir: /workspace
+    ports:
+      - "8888:8888"
+
+  streamlit:
+    build: .
+    command: streamlit run workspace/interface.py --server.port 8501
+    volumes:
+      - .:/workspace
+    env_file: .env
+    working_dir: /workspace
+    ports:
+      - "8501:8501"
+
