@@ -131,7 +131,6 @@ ai-agent/
 ├── .env
 ├── docs/
 ├── faiss_index/
-├── images/
 ├── workspace/
 │   ├── chatBot.py
 │   ├── embedder.py
