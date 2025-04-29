@@ -97,7 +97,7 @@ cd ai-agent
 6. Copier la clé et garder la.
 #### Executer la commande 
 ```bash
-echo "MISTRAL_API_KEY="Votre clé API ici" > .env
+echo MISTRAL_API_KEY="Votre clé API ici" > .env
 ```
 ### 4. Construction des images Docker
 
