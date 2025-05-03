@@ -20,7 +20,7 @@ services:
 
   streamlit:
     build: .
-    command: streamlit run workspace/interface.py --server.port 8501
+    command: streamlit run app/interface.py --server.port 8501
     volumes:
       - .:/workspace
     env_file: .env
