@@ -2,7 +2,8 @@ import streamlit as st
 from chatBot import get_response
 from embedder import embedd, load_and_split
 from langchain_core.messages import HumanMessage ,AIMessage
-
+from pathlib import Path  
+import os
 if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = []
 
@@ -27,12 +28,18 @@ st.markdown("""
 """)
 
 # Ajouter un bouton pour entrer les documents
+# Chemin vers le dossier où tu veux stocker les PDFs
+DOCS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 with st.sidebar:
     st.subheader("Vos documents")
     pdf = st.file_uploader("Téléchargez vos documents ici et cliquez sur 'Traiter'")
     if st.button("Traiter"):
-        chunks = load_and_split(pdf)
-        embedd(chunks)
+        # Construire le chemin de destination
+        save_path = os.path.join(DOCS_DIR, pdf.name)
+        with open(save_path, "wb") as f:
+            f.write(pdf.read())
+        st.success(f"Fichier enregistré dans : {save_path}")
+        embedd(save_path)
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):

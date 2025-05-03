@@ -8,21 +8,28 @@ from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.messages import HumanMessage ,AIMessage
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from dotenv import load_dotenv
-
 import os
+from pathlib import Path
 load_dotenv()
 
 
-from pathlib import Path
+
+# Path to the FAISS index containing our vector embeddings
 faiss_index_path = Path("..") / "faiss_index"
 
+# Get API key from environment variables
 api_key = os.environ["MISTRAL_API_KEY"]
+
+# Create embedding function using Mistral AI's embedding model
 embedding_function = MistralAIEmbeddings(model="mistral-embed", mistral_api_key=api_key)
+
+# Load the vector store from disk using the embedding function
 vector = FAISS.load_local(faiss_index_path, embeddings=embedding_function, allow_dangerous_deserialization=True)
 
-# Define LLM
-model = ChatMistralAI(mistral_api_key=api_key,model="mistral-large-latest")
+# Initialize the language model with Mistral AI
+model = ChatMistralAI(mistral_api_key=api_key, model="mistral-large-latest")
 
+# System prompt for contextualizing questions based on chat history
 contextualize_q_system_prompt = (
     "Given a chat history and the latest user question "
     "which might reference context in the chat history, "
@@ -31,29 +38,33 @@ contextualize_q_system_prompt = (
     "just reformulate it if needed and otherwise return it as is."
 )
 
+# Create a chat prompt template for contextualizing questions
 contextualize_q_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", contextualize_q_system_prompt),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
+        MessagesPlaceholder("chat_history"),  # Placeholder for chat history
+        ("human", "{input}"),  # Placeholder for user input
     ]
 )
 
-# Define a retriever interface
+# Create basic retriever from vector store
 retriever = vector.as_retriever()
+
+# Create a history-aware retriever that can understand context from previous conversation
 history_aware_retriever = create_history_aware_retriever(
-    llm= model,
+    llm=model,
     retriever=retriever,
     prompt=contextualize_q_prompt
 )
 
-# Define prompt template
+# Define prompt template function
 
 def create_prompt():
     """
     Returns a prompt instructed to produce a rephrased question based on the user's
     last question, but referencing previous messages (chat history).
     """
+    # System instruction in French for the astronomy observatory chatbot
     system_instruction = """Tu es un ChatBot qui va répondre aux questions des utilisateurs d'observatoire astronomique de l'école IMT ATlantique campus de Brest.\
         Si l'utilisateur pose des questions sur l'observatoire. Tu doit répondre en se basant seulement sur les données fournis.\
         Respecter toujours la format LaTex.\
@@ -62,19 +73,34 @@ def create_prompt():
         Répond toujours en français.\
         Utiliser le context : {context}"""
 
+    # Create chat prompt template with system instruction, chat history and user input
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_instruction),
         MessagesPlaceholder("chat_history"),
         ("human", "{input}")])
     return prompt
+
+# Create the prompt using our function
 prompt = create_prompt()
 
-
-# Create a retrieval chain to answer questions
+# Create a document chain that processes retrieved documents and generates a response
 document_chain = create_stuff_documents_chain(model, prompt)
+
+# Create a retrieval chain that combines retrieval and response generation
 retrieval_chain = create_retrieval_chain(history_aware_retriever, document_chain)
-def get_response(user_input,chat_history):
-    response = retrieval_chain.invoke({"input": user_input,"chat_history":chat_history})
+
+def get_response(user_input, chat_history):
+    """
+    Process user input and chat history to generate a response.
+    
+    Args:
+        user_input (str): The user's question or message
+        chat_history (list): Previous conversation history
+        
+    Returns:
+        str: The AI's response based on retrieved context and chat history
+    """
+    response = retrieval_chain.invoke({"input": user_input, "chat_history": chat_history})
     return response['answer']
 
 if __name__ == '__main__' :
