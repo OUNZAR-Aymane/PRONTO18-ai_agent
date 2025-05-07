@@ -1,4 +1,3 @@
-
 import os
 from dotenv import load_dotenv
 from langchain.schema import Document
@@ -16,9 +15,6 @@ from pathlib import Path
 load_dotenv()
 api_key = os.environ["MISTRAL_API_KEY"]
 faiss_index_path = Path("..") / "faiss_index"
-
-
-# Reference: https://docs.unstructured.io/open-source/core-functionality/chunking
 
 
  
@@ -129,21 +125,15 @@ def image_wrapper(core_elems, text_list, i, max_chars=200, elements_nb=3):
 
     return prefix, suffix
 
-def load_and_split(core_elems):
+def load_and_split(file_path):
     """
     Process document elements, handle images and tables, and split into chunks.
-    
-    Args:
-        core_elems: List of document elements from PDF
-    
-    Returns:
-        list: Document chunks suitable for embedding
     """
+    core_elems = get_core_elements(file_path)  # Extract core elements from the PDF
     # Initialize a text splitter with specified chunk size and overlap
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     text = ""  # Initialize an empty string to store the combined text
     text_list = []  # List to keep track of processed text elements
-
     # Iterate through each element in the core elements
     for i, element in enumerate(core_elems):
         if element.category == "Image":
@@ -176,19 +166,8 @@ def load_and_split(core_elems):
     # Split the document into smaller chunks using the text splitter
     chunks = text_splitter.split_documents([document])
     return chunks
-        
-def embedd(file_path):
-    """
-    Main function to process a PDF file and create embeddings.
-    
-    This function:
-    1. Extracts content from PDF including text, tables, and images
-    2. Processes and summarizes content
-    3. Creates embeddings and stores them in a FAISS vector database
-    
-    Args:
-        file_path: Path to the PDF file to process
-    """
+
+def get_core_elements(file_path):
     # Extract elements from PDF with table and image extraction enabled
     elements = partition_pdf(
         filename=file_path,
@@ -204,9 +183,23 @@ def embedd(file_path):
         el for el in elements
         if el.category not in ("Header", "Footer", "PageNumber")
     ]
+    return core_elems
+        
+def multimodal_embedder(file_path):
+    """
+    Main function to process a PDF file and create embeddings.
+    
+    This function:
+    1. Extracts content from PDF including text, tables, and images
+    2. Processes and summarizes content
+    3. Creates embeddings and stores them in a FAISS vector database
+    
+    Args:
+        file_path: Path to the PDF file to process
+    """
 
     # Process elements and split into chunks
-    chunks = load_and_split(core_elems)
+    chunks = load_and_split(file_path)
     
     # Define the embedding model
     embeddings = MistralAIEmbeddings(model="mistral-embed", mistral_api_key="MISTRAL_API_KEY")
@@ -231,7 +224,7 @@ if __name__ == '__main__' :
             pdf_path = os.path.join("docs", filename)  # Full path to PDF
             print(f"Processing: {filename}...")
             try:
-                embedd(pdf_path)
+                multimodal_embedder(pdf_path)
                 print("Done!")
             except Exception as e:
                 print("An error occured :",e)

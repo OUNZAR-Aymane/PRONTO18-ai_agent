@@ -8,7 +8,6 @@ from pathlib import Path
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
-import uuid
 from pdf2image import convert_from_path
 import io 
 
@@ -30,7 +29,6 @@ def extract_text_and_images(pdf_path):
     """
     doc = fitz.open(pdf_path)
     documents = []
-    base_filename = os.path.splitext(os.path.basename(pdf_path))[0]
     processed_xrefs = set()  # Track image references to avoid duplicates
     
     for i, page in enumerate(doc):
@@ -113,7 +111,7 @@ def load_and_split(pdf_path):
     return chunks
 
 
-def embedd(pdf_path):
+def embedder_with_OCR(pdf_path):
     """
     Create embeddings for PDF content and store in FAISS index.
     
@@ -137,10 +135,10 @@ def embedd(pdf_path):
 
 
 if __name__ == '__main__' :
-    for filename in os.listdir("docs"):
-        if filename.endswith(".pdf"):  # Check if it's a PDF file
-            pdf_path = os.path.join("docs", filename)  # Full path to PDF
-            print("Processing:",f'{filename} ...')
-            chunks = load_and_split(pdf_path)
-            embedd(chunks)
+        filename = "docs/astro-procedures-resume-anon.pdf"
+        print(f"Processing: {filename}...")
+        try:
+            embedder_with_OCR(filename)
             print("Done!")
+        except Exception as e:
+            print("An error occured :",e)
