@@ -21,7 +21,7 @@ class Embedder:
             self.document_index = {}
     def load_and_split(self,**args):
         pass 
-    def embed(self,pdf_path):
+    def embed(self,pdf_path,store,save=False):
         """
         Create embeddings from PDF content and store them in a FAISS vector index.
         
@@ -41,26 +41,18 @@ class Embedder:
         for chunk in chunks:
             chunk.metadata["doc_id"] = doc_id
     
-        # Define the embedding model using MistralAI
-        embeddings = MistralAIEmbeddings(model="mistral-embed", mistral_api_key=self.api_key)
+        store.add_documents(chunks)
         
-        if not self.faiss_index_path.exists():
-            self.faiss_index_path.mkdir(parents=True, exist_ok=True)
-            vector = FAISS.from_documents(chunks, embeddings)
-        else:
-            vector = FAISS.load_local(str(self.faiss_index_path), embeddings=embeddings, allow_dangerous_deserialization=True)
-            vector.add_documents(chunks)
-        
-        # Save the updated vector store to disk
-        vector.save_local(str(self.faiss_index_path))
-        # Enregistrer la correspondance document ↔ doc_id
-        self.document_index[os.path.basename(pdf_path)] = doc_id
-        with open(self.document_index_path, "w") as f:
-            json.dump(self.document_index, f, indent=2)
-            print(self.document_index)
+        if save :
+            # Save the updated vector store to disk
+            store.save_local(str(self.faiss_index_path))
+            # Enregistrer la correspondance document ↔ doc_id
+            self.document_index[os.path.basename(pdf_path)] = doc_id
+            with open(self.document_index_path, "w") as f:
+                json.dump(self.document_index, f, indent=2)
 
 
-    def delete_document(self,doc_name: str) -> None:
+    def delete_document(self,doc_name: str, store,save=False) -> None:
         """
         Remove every vector that belongs to the PDF *doc_name*
         without re-embedding anything.
@@ -75,11 +67,6 @@ class Embedder:
             model="mistral-embed",
             mistral_api_key=self.api_key,
         )
-        store = FAISS.load_local(
-            self.faiss_index_path,
-            embeddings=embeddings,
-            allow_dangerous_deserialization=True,
-        )
 
         # -------- collect the doc-store IDs to delete ----------
         ids_to_delete = [
@@ -92,12 +79,12 @@ class Embedder:
 
         # -------- constant-time in-place deletion --------------
         store.delete(ids=ids_to_delete)
-
-        # -------- persist & housekeeping -----------------------
-        store.save_local(str(self.faiss_index_path))
-        del self.document_index[doc_name]
-        with open(self.document_index_path, "w") as f:
-            json.dump(self.document_index, f, indent=2)
+        if save:
+            # -------- persist & housekeeping -----------------------
+            store.save_local(str(self.faiss_index_path))
+            del self.document_index[doc_name]
+            with open(self.document_index_path, "w") as f:
+                json.dump(self.document_index, f, indent=2)
 
     def vectors_for_pdf(self, doc_id) -> int:
         """

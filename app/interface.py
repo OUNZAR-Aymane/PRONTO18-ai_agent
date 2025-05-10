@@ -6,11 +6,24 @@ from EmbedderWithOcr import EmbedderWithOcr
 from MultimodalEmbedder import MultimodalEmbedder
 from langchain_core.messages import HumanMessage, AIMessage
 import os
-
+import json
+from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
 import torch, types
 torch.classes.__path__ = types.SimpleNamespace(_path=[])
+
+# Titre de la page
+# Page configuration
+st.set_page_config(
+    page_title="Chatbot Observatoire Astronomique", 
+    page_icon=":astronaut:", 
+    layout="wide",
+    menu_items={
+        'About': "Observatoire Astronomique - IMT Atlantique, campus de Brest"
+    }
+)
+
 
 load_dotenv()
 api_key = os.getenv("MISTRAL_API_KEY")
@@ -20,6 +33,29 @@ if api_key is None:
 DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
 # Path to the FAISS index containing our vector embeddings
 INDEX_DIR = Path(__file__).resolve().parent.parent / "faiss_index"
+# Répertoire des historiques
+HISTORY_DIR = Path(__file__).resolve().parent.parent / "chat_histories"
+os.makedirs(HISTORY_DIR, exist_ok=True)
+
+
+# --- Entrée utilisateur au début de la session ---
+user_name_input = st.text_input("👤 Entrez votre nom pour commencer :", key="username_input")
+
+# Réinitialisation si changement d'utilisateur
+if "user_name" not in st.session_state or st.session_state["user_name"] != user_name_input:
+    st.session_state["user_name"] = user_name_input
+    st.session_state["chat_history"] = []
+    st.session_state["messages"] = []
+
+if not st.session_state["user_name"]:
+    st.stop()  # Attend que l'utilisateur entre un nom
+
+# --- Chargement de l’historique utilisateur ---
+file_safe_name = st.session_state['user_name'].lower().replace(' ', '_')
+user_history_path = Path(__file__).resolve().parent.parent / "chat_histories" / f"{file_safe_name}"
+os.makedirs(user_history_path, exist_ok=True)
+
+
 
 model, embedding_function = model_and_embedding_function(api_key)
 contextualize_q_prompt = create_contextualize_q_system_prompt()
@@ -36,25 +72,22 @@ if "chain" not in st.session_state:
 
 
 # Initialize session state
-if "chat_history" not in st.session_state:
-    st.session_state["chat_history"] = []
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
 if "available_documents" not in st.session_state:
     st.session_state.available_documents = []
 
-# Titre de la page
-# Page configuration
-st.set_page_config(
-    page_title="Chatbot Observatoire Astronomique", 
-    page_icon=":astronaut:", 
-    layout="wide",
-    menu_items={
-        'About': "Observatoire Astronomique - IMT Atlantique, campus de Brest"
-    }
-)
+
+if "messages" not in st.session_state:
+    st.session_state["messages"] = []
+if "chat_history" not in st.session_state:
+    st.session_state["chat_history"] = []
+if "history_path" not in st.session_state:
+    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")   # safe, no spaces/colons
+    st.session_state.history_path = user_history_path / f"{ts}.json"
+    
+
+
+
+
 
 # Function to refresh available documents
 def refresh_document_list():
@@ -66,17 +99,16 @@ def refresh_document_list():
 # Initialize document list
 refresh_document_list()
 
-with st.container():
-    st.markdown("""
-    Bonjour! Je suis votre assistant virtuel pour l'observatoire astronomique de l'IMT Atlantique. 
-    Je peux vous aider avec:
-    - Les informations sur l'observatoire
-    - L'utilisation des équipements
-    - Les objets astronomiques visibles
-    - Les procédures d'observation
-    
-    Posez-moi vos questions, je suis là pour vous aider!
-    """)
+# --- Introduction ---
+st.markdown(f"""
+Salut **{st.session_state['user_name']}** ! 👋  
+Je suis ton assistant virtuel pour l'observatoire astronomique. 😊  
+Je peux t'aider avec :
+- L'utilisation des équipements
+- Les objets astronomiques que tu observes
+
+Pose-moi une question ou demande-moi de l'aide !
+""")
 
 
 # Ajouter un titre
@@ -84,8 +116,26 @@ st.title("Bienvenue dans l'Observatoire Astronomique 🚀")
 
 
 
-
 with st.sidebar:
+    with st.expander("Historique de la discussion", expanded=False):
+        history_files = [file for file in os.listdir(user_history_path)]
+        history_file = st.selectbox("Historique de la discussion", history_files, index=None, placeholder="— choisir une conversation —" )
+        if history_file:
+            st.session_state.history_path = os.path.join(user_history_path, history_file)
+            try:
+                with open(st.session_state.history_path, "r") as f:
+                    data = json.load(f)
+                    st.session_state.messages = data.get("messages", [])
+                    st.session_state.chat_history = [
+                        HumanMessage(content=msg["content"]) if msg["type"] == "human"
+                        else AIMessage(content=msg["content"])
+                        for msg in data.get("chat_history", [])
+                    ]
+                st.rerun()
+            except Exception as e:
+                st.warning(f"Erreur de chargement de l'historique : {e}")
+
+
     st.subheader("Gérer vos documents")
     # Document upload section
     with st.expander("Télécharger un document", expanded=False):
@@ -164,6 +214,9 @@ with st.sidebar:
                 st.text(f"📄 {doc}")
         else:
             st.info("Aucun document disponible.")
+        st.markdown("---")
+    st.subheader("🛠️ Espace responsable")
+    show_admin = st.checkbox("Afficher toutes les discussions")
 
 
 
@@ -208,3 +261,40 @@ if user_input:
         [HumanMessage(content=user_input), AIMessage(content=response)]
     )
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+# --- Sauvegarde de l'historique ---
+def save_chat_history():
+    with open(st.session_state.history_path, "w") as f:
+        json.dump({
+            "messages": st.session_state.messages,
+            "chat_history": [
+                {"type": "human", "content": msg.content} if isinstance(msg, HumanMessage)
+                else {"type": "ai", "content": msg.content}
+                for msg in st.session_state.chat_history
+            ]
+        }, f)
+
+save_chat_history()
+
+# --- Espace Responsable ---
+if show_admin:
+    st.markdown("## 🔍 Historique complet des utilisateurs")
+    history_files = [f for f in os.listdir(HISTORY_DIR) if f.startswith("history_") and f.endswith(".json")]
+
+    if not history_files:
+        st.info("Aucune discussion enregistrée pour le moment.")
+    else:
+        selected_file = st.selectbox("Choisissez un utilisateur :", history_files)
+        if selected_file:
+            try:
+                with open(os.path.join(HISTORY_DIR, selected_file), "r") as f:
+                    data = json.load(f)
+                    messages = data.get("messages", [])
+                    st.markdown(f"### 💬 Historique de `{selected_file}`")
+
+                    for msg in messages:
+                        role = "👤 Utilisateur" if msg["role"] == "user" else "🤖 Assistant"
+                        st.markdown(f"**{role}** : {msg['content']}")
+                        st.markdown("---")
+            except Exception as e:
+                st.error(f"Erreur lors du chargement de {selected_file} : {e}")
