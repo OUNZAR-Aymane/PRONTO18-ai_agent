@@ -13,7 +13,8 @@
          tesseract-ocr \
          libtesseract-dev \
          poppler-utils \          
-         libgl1 \    
+         libgl1 \
+         nano \   
       && rm -rf /var/lib/apt/lists/*
     # ---- Python deps ----------------------------------------------------------
     COPY requirements.txt .
@@ -22,3 +23,4 @@
     # ---- default command ----
     CMD ["bash"]
     
+RUN apt-get update && apt-get install -y nano
