@@ -1,0 +1,6 @@
+cookie:
+  name: streamlit_auth
+  key: "clé_sécurisée_générée_ici"
+  expiry_days: 7
+credentials:
+  usernames:

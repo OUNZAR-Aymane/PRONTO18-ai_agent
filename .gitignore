@@ -11,6 +11,9 @@ venv/
 ENV/
 env/
 
+# Users info
+config.yaml/
+chat_histores/
 # Jupyter
 .ipynb_checkpoints/
 
