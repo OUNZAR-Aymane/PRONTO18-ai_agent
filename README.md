@@ -99,16 +99,16 @@ cd ai-agent
 ```bash
 echo MISTRAL_API_KEY="Votre clé API ici" > .env
 ```
-## 🔐 Configuration de `config.yaml` pour l'authentification
+### 4. Configuration de `config.yaml` pour l'authentification
 
 Cette application utilise [`streamlit-authenticator`](https://github.com/mkhorasani/streamlit-authenticator) pour gérer la connexion et les sessions utilisateurs.  
 Pour sécuriser vos identifiants et les cookies de session, suivez les étapes ci-dessous pour créer votre propre `config.yaml`.
 
-### 1. ❌ Ne pas utiliser directement `config.example.yaml`
+### 1. Ne pas utiliser directement `config.example.yaml`
 
 Ce fichier est un modèle. Vous devez créer votre **propre version sécurisée** et ne jamais la publier dans Git.
 
-### 2. ✅ Créez un fichier `config.yaml`
+#### 2. Créez un fichier `config.yaml`
 
 Créez un fichier `config.yaml` à la racine du projet à partir du modèle :
 
@@ -118,7 +118,7 @@ cp config.example.yaml config.yaml
 
 Modifiez les valeurs à l’intérieur, en particulier :
 
-#### 🔐 Générer une `cookie.key` sécurisée
+##### Générer une `cookie.key` sécurisée
 
 Cette clé permet de signer les cookies de session afin d’empêcher toute falsification. Elle doit :
 
@@ -141,7 +141,7 @@ cookie:
   key: "clé_sécurisée_générée_ici"
   expiry_days: 7
 ```
-#### Étapes :
+##### Étapes :
 
 1. Ouvrir le fichier :
 
@@ -149,20 +149,17 @@ cookie:
 nano config.yaml
 ```
 
-2. Naviguer avec les flèches et modifier par exemple :
+2. Naviguer avec les flèches et modifier :
 
 ```yaml
-password: "$2b$12$nouveau_hash_bcrypt"
 key: "nouvelle_clé_cookie_secure"
 ```
 
 3. Enregistrer : `Ctrl + O` puis `Entrée`  
 4. Quitter : `Ctrl + X`
 
-✅ Cette méthode est pratique et rapide pour faire de petits changements sans quitter le terminal.
-
 ⚠️ Attention à l’indentation : utilisez **des espaces, pas de tabulations**, et gardez les niveaux de retrait YAML intacts.
-### 4. 🛡️ Ajoutez `config.yaml` au `.gitignore`
+#### 4. Ajoutez `config.yaml` au `.gitignore`
 
 Dans votre fichier `.gitignore`, ajoutez :
 
@@ -172,7 +169,7 @@ config.yaml
 
 Cela empêchera toute fuite accidentelle d’informations sensibles.
 
-### ✅ Résumé
+#### Résumé
 
 | Fichier                | Doit être publié ? | Remarques                           |
 |------------------------|--------------------|-------------------------------------|
