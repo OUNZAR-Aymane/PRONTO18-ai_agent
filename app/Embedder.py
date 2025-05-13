@@ -21,7 +21,7 @@ class Embedder:
             self.document_index = {}
     def load_and_split(self,**args):
         pass 
-    def embed(self,pdf_path,store,save=False):
+    def embed(self,pdf_path,store,wait_time=30,save=False):
         """
         Create embeddings from PDF content and store them in a FAISS vector index.
         
@@ -40,8 +40,17 @@ class Embedder:
         # Ajouter doc_id dans les métadonnées pour chaque chunk
         for chunk in chunks:
             chunk.metadata["doc_id"] = doc_id
-    
-        store.add_documents(chunks)
+        if store is None :
+            # Create a new FAISS vector store
+            embeddings = MistralAIEmbeddings(
+                model="mistral-embed",
+                mistral_api_key=self.api_key or os.getenv("MISTRAL_API_KEY"),
+                wait_time=wait_time,
+                max_retries=10
+            )
+            store = FAISS.from_documents(chunks, embeddings)
+        else : 
+            store.add_documents(chunks)
         
         if save :
             # Save the updated vector store to disk
@@ -50,6 +59,7 @@ class Embedder:
             self.document_index[os.path.basename(pdf_path)] = doc_id
             with open(self.document_index_path, "w") as f:
                 json.dump(self.document_index, f, indent=2)
+        return store
 
 
     def delete_document(self,doc_name: str, store,save=False) -> None:
@@ -57,16 +67,11 @@ class Embedder:
         Remove every vector that belongs to the PDF *doc_name*
         without re-embedding anything.
         """
-        if doc_name not in self.document_index:
-            print(f"{doc_name} not present.")
-            return
-
+        if doc_name not in self.document_index or store is None:
+            return False
+        
         target_doc_id = self.document_index[doc_name]
 
-        embeddings = MistralAIEmbeddings(
-            model="mistral-embed",
-            mistral_api_key=self.api_key,
-        )
 
         # -------- collect the doc-store IDs to delete ----------
         ids_to_delete = [
@@ -75,7 +80,7 @@ class Embedder:
             if store.docstore.search(ds_id).metadata.get("doc_id") == target_doc_id
         ]
         if not ids_to_delete:
-            return
+            return True
 
         # -------- constant-time in-place deletion --------------
         store.delete(ids=ids_to_delete)
@@ -85,16 +90,13 @@ class Embedder:
             del self.document_index[doc_name]
             with open(self.document_index_path, "w") as f:
                 json.dump(self.document_index, f, indent=2)
+        return True
 
-    def vectors_for_pdf(self, doc_id) -> int:
+    def vectors_for_pdf(self, doc_id=None) -> int:
         """
         Return the number of vectors stored for *pdf_name*.
         If the PDF is not in the index, the function returns 0.
         """
-        # ------- 1. read the document↔doc_id mapping  --------------------------
-
-        target_doc_id = doc_id
-
         embeddings = MistralAIEmbeddings(
             model="mistral-embed",
             mistral_api_key=self.api_key or os.getenv("MISTRAL_API_KEY"),
@@ -105,14 +107,26 @@ class Embedder:
             embeddings=embeddings,
             allow_dangerous_deserialization=True,
         )
-
-        # ------- 3. count matching vectors ------------------------------------
-        ids = [
-            ds_id
-            for ds_id in store.index_to_docstore_id.values()
-            if store.docstore.search(ds_id).metadata.get("doc_id") == target_doc_id
-        ]
-        return len(ids)
+        # ------- 1. read the document↔doc_id mapping  --------------------------
+        if doc_id is not None:
+            target_doc_id = doc_id
+            # ------- 3. count matching vectors ------------------------------------
+            ids = [
+                ds_id
+                for ds_id in store.index_to_docstore_id.values()
+                if store.docstore.search(ds_id).metadata.get("doc_id") == target_doc_id
+            ]
+            return len(ids)
+        else :
+            available_ids = [
+                ds_id
+                for ds_id in store.index_to_docstore_id.values()
+            ]
+            available_doc_ids = [
+                store.docstore.search(ds_id).metadata.get("doc_id")
+                for ds_id in available_ids
+            ]
+            return set(available_doc_ids)
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
@@ -122,4 +136,4 @@ if __name__ == "__main__":
     DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
     api_key = os.getenv("MISTRAL_API_KEY")
     embedder = Embedder(api_key)
-    print(embedder.vectors_for_pdf("b6c0c558-5582-4aeb-9d8a-293dfe04a32d"))
+    print(embedder.vectors_for_pdf())

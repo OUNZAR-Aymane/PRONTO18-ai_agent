@@ -6,6 +6,8 @@ from langchain_core.output_parsers import StrOutputParser
 from mistralai import Mistral
 from unstructured.partition.pdf import partition_pdf
 from Embedder import Embedder
+from tenacity import retry, stop_after_attempt, wait_incrementing, retry_if_exception_type
+
 
 class MultimodalEmbedder(Embedder):
     def __init__(self,api_key):
@@ -33,8 +35,14 @@ class MultimodalEmbedder(Embedder):
         # Create a chain that combines the prompt, model, and output parser
         summarize_chain = {"element": lambda x: x} | prompt | text_model | StrOutputParser()
         # Invoke the chain with the item and return the summary
-        return summarize_chain.invoke({"element": item})
-
+        @retry(
+            retry=retry_if_exception_type(Exception),
+            wait=wait_incrementing(start=30, increment=30, max=120),
+            stop=stop_after_attempt(5)
+        )
+        def _invoke_chain(chain, item):
+            return chain.invoke({"element": item})
+        return _invoke_chain(summarize_chain, item)
 
     def summarize_image(self,b64,prefix,suffix):
         """
@@ -79,11 +87,18 @@ class MultimodalEmbedder(Embedder):
             }
         ]
         
-        # Perform inference
-        response = client.chat.complete(
-            model="pixtral-large-latest",
-            messages=messages,
+        @retry(
+            retry=retry_if_exception_type(Exception),
+            wait=wait_incrementing(start=30, increment=30, max=120),
+            stop=stop_after_attempt(5)
         )
+        def _chat_with_retry():
+            return client.chat.complete(
+                model="pixtral-large-latest",
+                messages=messages,
+            )
+
+        response = _chat_with_retry()
         # Return the model's output
         return response.choices[0].message.content
 

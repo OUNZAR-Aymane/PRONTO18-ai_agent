@@ -9,7 +9,7 @@ from langchain_core.messages import HumanMessage ,AIMessage
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from dotenv import load_dotenv
 from pathlib import Path
-load_dotenv()
+import os
 
 def model_and_embedding_function(api_key):
     # Create embedding function using Mistral AI's embedding model
@@ -39,7 +39,7 @@ def create_contextualize_q_system_prompt():
     return contextualize_q_prompt
 
 def load_vector_store(index_dir: Path,embedding_function):
-    if not index_dir.exists():
+    if not index_dir.exists() or len(os.listdir(index_dir)) == 0 :
         return None
     return FAISS.load_local(index_dir, embeddings=embedding_function,allow_dangerous_deserialization=True)
 
