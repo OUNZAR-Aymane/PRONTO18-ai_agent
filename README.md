@@ -183,7 +183,7 @@ docker compose build
 
 ### 5. Lancer les conteneurs
 
-- **Shell de développement (Obligatoire pour accéder et mofifier le code)** :
+- **Shell de développement (Obligatoire pour accéder et modifier le code)** :
 ```bash
 docker compose up dev
 ```
