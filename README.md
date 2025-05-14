@@ -203,5 +203,5 @@ Puis ouvrir [http://localhost:8501](http://localhost:8501)
 ### 7. Utiliser VS Code avec les conteneurs
 
 - Ouvrir `ai-agent/` dans VS Code.
-- `F1` > **Dev Containers: Reopen in Container**.
+- `F1` > **Dev Containers: Attach to Running Container**.
 - Travailler directement dans l'environnement conteneurisé.
