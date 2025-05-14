@@ -34,7 +34,6 @@ Le tout est **conteneurisé avec Docker** afin d'assurer portabilité, reproduct
 | **Récupération augmentée** (RAG) | Reformulation de question + récupération de documents pertinents | `LangChain` (`create_history_aware_retriever`, `create_retrieval_chain`) |
 | **Génération de réponse** | Construction d'une réponse basée sur les documents récupérés | `ChatMistralAI` (`mistral-large-latest`) |
 | **Interface utilisateur** | Application web interactive | `Streamlit` (`interface.py`) |
-| **Orchestration** | Scripts et notebooks de gestion | `chatBot.py`, `multimodal_embedder.ipynb` |
 
 ---
 
