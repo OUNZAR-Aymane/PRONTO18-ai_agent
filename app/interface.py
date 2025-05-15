@@ -6,13 +6,18 @@ from TextEmbedder import TextEmbedder
 from EmbedderWithOcr import EmbedderWithOcr
 from MultimodalEmbedder import MultimodalEmbedder
 from langchain_core.messages import HumanMessage, AIMessage
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.text import MIMEText
 import os
 import json
 from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
 import torch, types
+
 torch.classes.__path__ = types.SimpleNamespace(_path=[])
+load_dotenv()
 
 # Page configuration
 st.set_page_config(
@@ -24,8 +29,34 @@ st.set_page_config(
     }
 )
 
+def send_email(receiver_email, subject, body):
+    smtp_host = "smtp.gmail.com"
+    smtp_port = 587
+    smtp_user = os.getenv("SMTP_USER")
+    print("SMTP_USER:", smtp_user)
+    smtp_pass = os.getenv("SMTP_PASSWORD")
+    print("SMTP_PASSWORD:", smtp_pass)
+    server = smtplib.SMTP(smtp_host, smtp_port)
+
+    server.connect(smtp_host, smtp_port)
+    print("Connected.")
+    server.starttls()
+    print("TLS started.")
+    server.login(smtp_user, smtp_pass)
+    print("Login successful.")
+
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = smtp_user
+    msg["To"] = receiver_email
+
+    server.send_message(msg)
+    print("Email sent successfully.")
+    server.quit()
+
+
+
 # Load environment variables
-load_dotenv()
 api_key = os.getenv("MISTRAL_API_KEY")
 
 config_path = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -39,7 +70,7 @@ with st.sidebar:
     with st.expander("Actions", expanded=True):
         action = st.radio(
             "Sélectionnez une action",
-            ["Se connecter", "Créer un compte", "Changer le mot de passe", "Modifier mes informations"],
+            ["Se connecter", "Créer un compte", "Changer le mot de passe", "Modifier mes informations", "Mot de passe oublié", "Nom d'utilisateur oublié", "Changer le rôle d'un utilisateur"],
             index=0
         )
 
@@ -51,7 +82,7 @@ with st.sidebar:
 
         elif action == "Créer un compte":
             try:
-                email, username, name = authenticator.register_user(password_hint=False)
+                email, username, name = authenticator.register_user(password_hint=False, roles=["utilisateur"])
                 if email and username and name:
                     st.sidebar.success(f"Utilisateur `{username}` enregistré avec succès !")
             except Exception as e:
@@ -76,6 +107,65 @@ with st.sidebar:
                     st.sidebar.error(e)
             else:
                 st.sidebar.info("Vous devez être connecté pour modifier vos informations.")
+        elif action == "Changer le rôle d'un utilisateur":
+            if st.session_state.get('authentication_status'):
+                user_roles = st.session_state.get("roles")
+                if "admin" in user_roles:
+                    if st.session_state.get('authentication_status'):
+                        try:
+                            with open(config_path, "r") as f:
+                                config = yaml.load(f, Loader=SafeLoader)
+                                user_to_change = st.selectbox("Sélectionnez un utilisateur", config["credentials"]["usernames"])
+                                new_role = st.selectbox("Sélectionnez un nouveau rôle", ["admin", "utilisateur"])
+                                if st.button("Changer le rôle"):
+                                    config["credentials"]["usernames"][user_to_change]["roles"] = [new_role]
+                                    if user_to_change and new_role:
+                                        with open(config_path, "w") as f:
+                                            yaml.dump(config, f)
+                                        st.sidebar.success(f"Rôle de `{user_to_change}` changé en `{new_role}` avec succès !")
+                                    else:
+                                        st.sidebar.error("Veuillez sélectionner un utilisateur et un rôle.")
+                        except Exception as e:
+                            st.sidebar.error(e)
+                    else:
+                        st.sidebar.info("Vous devez être connecté pour modifier le rôle d'un utilisateur.")
+                else:
+                    st.sidebar.info("Vous devez être administrateur pour modifier le rôle d'un utilisateur.")
+            else:
+                st.sidebar.info("Vous devez être connecté pour modifier le rôle d'un utilisateur.")
+        elif action == "Mot de passe oublié":
+            try:
+                username_of_forgotten_password, \
+                email_of_forgotten_password, \
+                new_random_password = authenticator.forgot_password()
+                if username_of_forgotten_password:
+                    send_email(
+                        email_of_forgotten_password,
+                        "Votre nouveau mot de passe",
+                        f"Bonjour,\n\nVotre nouveau mot de passe est : {new_random_password} ")
+                    st.success('Mot de passe oublié. Un e-mail a été envoyé à l\'adresse fournie.')
+                    # To securely transfer the new password to the user please see step 8.
+                elif username_of_forgotten_password == False:
+                    st.error('Nom d\'utilisateur ou e-mail non trouvé.')
+            except Exception as e:
+                st.error(e)
+        elif action == "Nom d'utilisateur oublié":
+            try:
+                username_of_forgotten_username, \
+                email_of_forgotten_username = authenticator.forgot_username()
+                if username_of_forgotten_username:
+                    send_email(
+                        email_of_forgotten_username,
+                        "Rappel de votre identifiant",
+                        f"Bonjour,\n\nVotre identifiant est : {username_of_forgotten_username}"
+                    )
+                    st.success('Nom d\'utilisateur oublié. Un e-mail a été envoyé à l\'adresse fournie.')
+                    # To securely transfer the username to the user please see step 8.
+                elif username_of_forgotten_username == False:
+                    st.error('Nom d\'utilisateur ou e-mail non trouvé.')
+            except Exception as e:
+                st.error(e)
+        
     if st.session_state.get('authentication_status'):
             authenticator.logout()
 
@@ -100,15 +190,13 @@ elif st.session_state.get('authentication_status'):
     os.makedirs(HISTORY_DIR, exist_ok=True)
 
     # --- User input at the beginning of the session ---
-    user_name_input = st.session_state.get("name")
-    if "user_name" not in st.session_state:
-        st.session_state["user_name"] = user_name_input
-    
-    user_role = st.session_state.get("roles")
+   
+    user_name = st.session_state.get("name")
+    user_roles = st.session_state.get("roles")
   
 
     # --- Loading user history ---
-    file_safe_name = st.session_state['user_name'].lower().replace(' ', '_')
+    file_safe_name = user_name.lower().replace(' ', '_')
     user_history_path = HISTORY_DIR / file_safe_name
     os.makedirs(user_history_path, exist_ok=True)
 
@@ -180,7 +268,7 @@ elif st.session_state.get('authentication_status'):
 
     # --- Introduction ---
     st.markdown(f"""
-    Salut **{st.session_state['user_name']}** ! 👋  
+    Salut **{user_name}** ! 👋  
     Je suis ton assistant virtuel pour l'observatoire astronomique. 😊  
     Je peux t'aider avec l'utilisation et la configuration des équipements
     Pose-moi une question ou demande-moi de l'aide !
@@ -192,7 +280,7 @@ elif st.session_state.get('authentication_status'):
     with st.sidebar:
         st.subheader("Historique de la discussion")
         with st.expander("Historique de la discussion", expanded=False):
-            if user_role == "admin":
+            if "admin" in user_roles:
                 # List all user directories
                 user_directories = [d for d in os.listdir(HISTORY_DIR) if os.path.isdir(os.path.join(HISTORY_DIR, d))]
                 if not user_directories:
@@ -264,7 +352,7 @@ elif st.session_state.get('authentication_status'):
                     embedder = MultimodalEmbedder(api_key)
                 wait_time = int(st.text_input("wait time (optional) : ",value=30))
                 add_permanently = False
-                if user_role == "admin":
+                if "admin" in user_roles:
                     add_permanently = st.checkbox("Ajouter un document de manière permanente")
                 if st.button("Traiter", key="process_button"):
                     try:
@@ -272,7 +360,8 @@ elif st.session_state.get('authentication_status'):
                         save_path = os.path.join(DOCS_DIR, pdf.name)
                         with open(save_path, "wb") as f:
                             f.write(pdf.read())
-                        if user_role == "admin" : st.success(f"Fichier enregistré dans : {save_path}")
+                        if "admin" in user_roles : 
+                            st.success(f"Fichier enregistré dans : {save_path}")
                         with st.spinner("Indexation du document…"):
                             # Process the document
                             st.session_state.vector = embedder.embed(save_path, st.session_state.vector, wait_time=wait_time, save=add_permanently)
@@ -284,7 +373,7 @@ elif st.session_state.get('authentication_status'):
                             )
                             refresh_document_list()
                         st.success("Documents traités avec succès !")
-                        if user_role != "admin":
+                        if "admin" in user_roles:
                             os.remove(save_path)
                     except Exception as e:
                         st.error(f"Erreur lors du traitement du document : {e}")
@@ -299,7 +388,7 @@ elif st.session_state.get('authentication_status'):
                     placeholder="— choisir un document —" 
                 )
                 delete_permanently = False
-                if user_role == "admin":
+                if "admin" in user_roles:
                     delete_permanently = st.checkbox("Supprimer le document de manière permanente")
                 if selected_doc and st.button("Supprimer", key="delete_btn"):
                     try:
@@ -358,14 +447,16 @@ elif st.session_state.get('authentication_status'):
 
         # 3) Generation loop
         while True:
+            nb_tentatives = 0
             try:
                 with st.spinner("Réflexion en cours..."):
                     response = get_response(user_input, st.session_state["chat_history"], st.session_state.vector, st.session_state.chain)
                 break  # Exit if all goes well
             except Exception as e:
+                nb_tentatives += 1
                 # Rewrite in the same container → old text is replaced
                 with assistant_slot.chat_message("assistant"):
-                    st.write(f"Une erreur est survenue : {e}. Nouvelle tentative…")
+                    st.write(f"Une erreur est survenue : {e}. Nouvelle tentative…(Tentative numéro : {nb_tentatives})")
 
         # 4) Final response: overwrite placeholder with real content
         with assistant_slot.chat_message("assistant"):
