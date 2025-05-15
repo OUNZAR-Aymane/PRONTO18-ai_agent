@@ -34,7 +34,6 @@ Le tout est **conteneurisé avec Docker** afin d'assurer portabilité, reproduct
 | **Récupération augmentée** (RAG) | Reformulation de question + récupération de documents pertinents | `LangChain` (`create_history_aware_retriever`, `create_retrieval_chain`) |
 | **Génération de réponse** | Construction d'une réponse basée sur les documents récupérés | `ChatMistralAI` (`mistral-large-latest`) |
 | **Interface utilisateur** | Application web interactive | `Streamlit` (`interface.py`) |
-| **Orchestration** | Scripts et notebooks de gestion | `chatBot.py`, `multimodal_embedder.ipynb` |
 
 ---
 
@@ -184,7 +183,7 @@ docker compose build
 
 ### 5. Lancer les conteneurs
 
-- **Shell de développement (Obligatoire pour accéder et mofifier le code)** :
+- **Shell de développement (Obligatoire pour accéder et modifier le code)** :
 ```bash
 docker compose up dev
 ```
@@ -204,5 +203,5 @@ Puis ouvrir [http://localhost:8501](http://localhost:8501)
 ### 7. Utiliser VS Code avec les conteneurs
 
 - Ouvrir `ai-agent/` dans VS Code.
-- `F1` > **Dev Containers: Reopen in Container**.
+- `F1` > **Dev Containers: Attach to Running Container**.
 - Travailler directement dans l'environnement conteneurisé.
