@@ -6,6 +6,9 @@ from langchain_core.output_parsers import StrOutputParser
 from mistralai import Mistral
 from unstructured.partition.pdf import partition_pdf
 from Embedder import Embedder
+import base64
+import io
+from PIL import Image
 from tenacity import retry, stop_after_attempt, wait_incrementing, retry_if_exception_type
 
 
@@ -35,14 +38,22 @@ class MultimodalEmbedder(Embedder):
         # Create a chain that combines the prompt, model, and output parser
         summarize_chain = {"element": lambda x: x} | prompt | text_model | StrOutputParser()
         # Invoke the chain with the item and return the summary
-        @retry(
-            retry=retry_if_exception_type(Exception),
-            wait=wait_incrementing(start=30, increment=30, max=120),
-            stop=stop_after_attempt(5)
-        )
-        def _invoke_chain(chain, item):
-            return chain.invoke({"element": item})
-        return _invoke_chain(summarize_chain, item)
+        #@retry(
+        #    retry=retry_if_exception_type(Exception),
+        #    wait=wait_incrementing(start=30, increment=30, max=120),
+        #    stop=stop_after_attempt(5)
+        #)
+        #def _invoke_chain(chain, item):
+            #return chain.invoke({"element": item})
+        #return _invoke_chain(summarize_chain, item)
+        while True :
+            try:
+                # Call the Mistral API to get the response
+                response =  summarize_chain.invoke({"element": item})
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+        return response
 
     def summarize_image(self,b64,prefix,suffix):
         """
@@ -87,18 +98,24 @@ class MultimodalEmbedder(Embedder):
             }
         ]
         
-        @retry(
-            retry=retry_if_exception_type(Exception),
-            wait=wait_incrementing(start=30, increment=30, max=120),
-            stop=stop_after_attempt(5)
-        )
-        def _chat_with_retry():
-            return client.chat.complete(
-                model="pixtral-large-latest",
-                messages=messages,
-            )
+        #@retry(
+        #    retry=retry_if_exception_type(Exception),
+        #    wait=wait_incrementing(start=30, increment=30, max=120),
+        #    stop=stop_after_attempt(5)
+        #)
+        #def _chat_with_retry():
+        while True:
+            try:
+                # Call the Mistral API to get the response
+                response =  client.chat.complete(
+                    model="pixtral-large-latest",
+                    messages=messages,
+                )
+                break
+            except Exception as e:
+                print(f"Error: {e}")
 
-        response = _chat_with_retry()
+        #response = _chat_with_retry()
         # Return the model's output
         return response.choices[0].message.content
 
@@ -165,6 +182,10 @@ class MultimodalEmbedder(Embedder):
             if element.category == "Image":
                 # If the element is an image, extract its base64 representation
                 b64 = element.metadata.image_base64
+                img_data = base64.b64decode(b64)
+                image = Image.open(io.BytesIO(img_data))
+                if image.height <= 1 or image.width <= 1:
+                    continue  # Skip summarization
                 # Generate prefix and suffix for the image using the wrapper function
                 prefix, suffix = self.image_wrapper(core_elems, text_list, i)
                 # Summarize the image using the summarize_image function
