@@ -14,3 +14,4 @@ faiss-cpu==1.10.0
 hf_xet==1.0.5
 PyMuPDF==1.25.5
 streamlit-authenticator==0.4.2
+ipywidgets==8.1.7
