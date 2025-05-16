@@ -82,21 +82,50 @@ git clone https://gitlab-df.imt-atlantique.fr/a24ounza/ai-agent.git
 cd ai-agent
 ```
 
-### 3. Configurer les variables d'environnement
-#### Créer une clé API de Mistral 
-1. Accéder à [https://console.mistral.ai/home](https://console.mistral.ai/home). Créer un compte ou ce connecter avec un compte google.
+### 3. Configurer les variables d’environnement
 
-![SideBar](assets\images\sidebar.png)
+Cette étape permet de fournir les clés API nécessaires au bon fonctionnement du chatbot.
 
-2. Accéder à `Clés API`. *
-3. Il faudra choisir un plan pour activer un forfait. Choisissez le plan Experiment (Gratuit ).
-4. Accépter les conditions et vérifier votre numéro de téléphone.
-![alt text](assets\images\api_key.png)
-5. Clicker sur `Créer une nouvelle clé`. Choisir un nom pour la clé et une date d'expiration (Jamais).
-6. Copier la clé et garder la.
-#### Executer la commande 
-```bash
-echo MISTRAL_API_KEY="Votre clé API ici" > .env
+---
+
+#### 3.1 Créer une clé API Mistral
+
+1. Rendez-vous sur [https://console.mistral.ai/home](https://console.mistral.ai/home).
+2. Créez un compte ou connectez-vous via Google.
+3. Dans le menu de gauche, cliquez sur **"Clés API"**.
+
+   ![Sidebar](assets/images/sidebar.png)
+
+4. Choisissez un **plan gratuit (Experiment)**.
+5. Acceptez les conditions d’utilisation et vérifiez votre numéro de téléphone.
+6. Cliquez sur **"Créer une nouvelle clé"** :
+   - Donnez un nom à votre clé (par exemple `chatbot-key`)
+   - Choisissez une date d’expiration : **"Jamais"**
+7. Copiez la clé générée et conservez-la dans un endroit sécurisé.
+
+   ![Clé API](assets/images/api_key.png)
+
+---
+
+#### 3.2 (Optionnel) Créer un token Hugging Face
+
+Ce token permet d'améliorer certaines fonctionnalités du ChatBot (accès à certains modèles pré-entraînés).  
+Le ChatBot fonctionnera même sans, mais son utilisation est recommandée.
+
+Suivez les étapes officielles ici :  
+[Créer un access token Hugging Face](https://huggingface.co/docs/hub/security-tokens)
+
+---
+
+#### 3.3 Créer le fichier `.env`
+
+À la racine du projet (dans le dossier source), créez un fichier nommé `.env` contenant vos clés privées :
+
+```env
+MISTRAL_API_KEY="votre_clé_mistral_ici"
+HF_TOKEN="votre_token_huggingface_ici"
+SMTP_USER="votre.email@gmail.com"
+SMTP_PASSWORD="votre_mot_de_passe_d'application"
 ```
 ### 4. Configuration de `config.yaml` pour l'authentification
 
@@ -109,7 +138,7 @@ Ce fichier est un modèle. Vous devez créer votre **propre version sécurisée*
 
 #### 2. Créez un fichier `config.yaml`
 
-Créez un fichier `config.yaml` à la racine du projet à partir du modèle :
+Créez un fichier `config.yaml` à la racine du projet à partir de l'exemple `config.example.yaml` :
 
 ```bash
 cp config.example.yaml config.yaml
@@ -138,42 +167,10 @@ Collez la chaîne générée dans votre `config.yaml` :
 cookie:
   name: streamlit_auth
   key: "clé_sécurisée_générée_ici"
-  expiry_days: 7
-```
-##### Étapes :
-
-1. Ouvrir le fichier :
-
-```bash
-nano config.yaml
+  expiry_days: 0
 ```
 
-2. Naviguer avec les flèches et modifier :
-
-```yaml
-key: "nouvelle_clé_cookie_secure"
-```
-
-3. Enregistrer : `Ctrl + O` puis `Entrée`  
-4. Quitter : `Ctrl + X`
-
-⚠️ Attention à l’indentation : utilisez **des espaces, pas de tabulations**, et gardez les niveaux de retrait YAML intacts.
-#### 4. Ajoutez `config.yaml` au `.gitignore`
-
-Dans votre fichier `.gitignore`, ajoutez :
-
-```
-config.yaml
-```
-
-Cela empêchera toute fuite accidentelle d’informations sensibles.
-
-#### Résumé
-
-| Fichier                | Doit être publié ? | Remarques                           |
-|------------------------|--------------------|-------------------------------------|
-| `config.example.yaml` | ✅ Oui             | Fichier modèle, sans données réelles |
-| `config.yaml`          | ❌ Non             | Contient des secrets — **ne pas publier** |
+⚠️ Vérifier que le fichier `config.yaml` est dans `.gitignore`.
 
 ### 4. Construction des images Docker
 
