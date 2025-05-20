@@ -1,0 +1,403 @@
+[
+  {
+    "question": "Quelle est la toute première étape avant d’utiliser le télescope de l’observatoire ?",
+    "answer": "Il faut d’abord déverrouiller la porte de l’observatoire en composant le code d’accès, condition indispensable pour accéder au télescope et aux commandes.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Où se trouve le bouton vert qu’il faut allumer pour mettre le matériel sous tension, et quelle action doit-on faire ?",
+    "answer": "Le bouton vert se trouve sur la multiprise installée dans l’armoire près de l’ordinateur ; il faut l’actionner pour alimenter l’ensemble des équipements.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Quel logiciel doit-on utiliser pour générer une carte du ciel et quel nom de matériel faut-il sélectionner pour établir la connexion ?",
+    "answer": "On lance Prism pour générer la carte du ciel, puis on sélectionne le lien matériel intitulé « Observatoire ».",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Que doit-on faire de l’oculaire une fois choisi avant toute observation ?",
+    "answer": "L’oculaire choisi doit être placé dans le porte-oculaires monté dans la coupole, en s’assurant qu’il est correctement enclenché.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Quelle commande spécifique faut-il exécuter dans le module « Contrôle Dôme » juste après la mise en route ?",
+    "answer": "Il faut lancer la commande « Init. Reset » dans « Contrôle Dôme », afin d’initialiser les capteurs et remettre la coupole en position de référence.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Lorsqu’il n’est pas en mode parking, à quelle position de référence faut-il ramener le télescope ?",
+    "answer": "Le télescope doit être repositionné au zénith, tube pointant strictement vers le haut, qui sert de position de référence.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Comment pointer un objet et synchroniser le télescope dessus dans Prism ?",
+    "answer": "Dans Prism, on pointe l’objet dans la carte du ciel, on effectue un double-clic dessus puis on choisit « Synchroniser avec l’objet ».",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Quelles opérations successives doit-on effectuer dans Prism avant de quitter la session concernant à la fois le télescope et le dôme ?",
+    "answer": "Avant de quitter : exécuter « Parking » dans « Contrôle Télescope » ; décocher « Activer suivi coupole » et mettre le dôme en parking ouest (ou relancer Init. Reset) dans « Contrôle Dôme » ; puis couper le lien matériel dans le menu « Observatoire ».",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Après avoir rangé l’oculaire, quelles sources d’alimentation et quelles vérifications de sécurité faut-il effectuer avant de fermer l’observatoire ?",
+    "answer": "Il faut éteindre le bouton vert de la multiprise, couper les radiateurs et vérifier que la porte des toilettes est bien fermée avant de clore la séance.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Où doit-on ranger la clé une fois l’observatoire fermé ?",
+    "answer": "La clé doit être déposée dans la boîte aux lettres de l’observatoire après la fermeture.",
+    "doc_name": "astro-procedures-resume-anon.pdf"
+  },
+  {
+    "question": "Pourquoi le coronographe de l’observatoire comporte-t-il cinq cônes obturateurs de diamètres différents et quel cône doit-on utiliser autour du périhélie et de l’aphélie ?",
+    "answer": "Le diamètre apparent du Soleil varie d’environ 3,3 % au cours de l’année (l’orbite terrestre ayant une excentricité de 0,0167) ; pour masquer exactement le disque selon la saison, le coronographe dispose donc de cinq cônes. On emploie le cône de plus grand diamètre autour du 2 janvier, date du périhélie où le Soleil apparaît le plus gros, et le cône de plus petit diamètre autour du 2 juillet, date de l’aphélie où il apparaît le plus petit.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Quelle est la première action du montage de Lyot dans le coronographe et quel est son effet sur la lumière solaire ?",
+    "answer": "La première étape consiste à placer un cône métallique exactement à la position de l’image du disque solaire ; sa base occulte le disque et élimine ainsi l’essentiel du flux lumineux, créant une « éclipse artificielle » indispensable pour observer la couronne.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Dans la deuxième action du montage de Lyot, quel dispositif supprime la lumière diffractée par le bord de l’objectif L1 et comment est-il positionné ?",
+    "answer": "Une lentille L2 forme l’image pupillaire de l’objectif L1 ; à cet endroit, on place un diaphragme circulaire dont le diamètre est réglé pour intercepter les ondelettes issues de la diffraction au bord de L1, tandis que les rayons provenant de la couronne traversent librement la pupille.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Quelle lentille réalise l’image de la couronne solaire dans le coronographe et quelles sont les caractéristiques de cette image ?",
+    "answer": "La lentille convergente L3, placée après le diaphragme, forme une image réelle non inversée de la couronne dans le plan focal du coronographe ; cette image peut être enregistrée sur un capteur photographique ou observée directement à l’oculaire.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Pourquoi le bleu du ciel est-il considéré comme l’« ennemi principal » pour observer les protubérances solaires avec le coronographe ?",
+    "answer": "La diffusion Rayleigh dans l’atmosphère est proportionnelle à la fréquence à la puissance quatre, donc beaucoup plus intense pour les courtes longueurs d’onde ; le fond lumineux bleu du ciel masque alors l’émission rouge Hα des protubérances, ce qui rend leur détection difficile sans filtrage.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "De quoi se compose une cellule élémentaire d’un filtre de Lyot et quelle est l’expression de son coefficient de transmission ?",
+    "answer": "Chaque cellule comprend une lame de spath d’Islande d’épaisseur e entre deux polariseurs rectilignes croisés à 45 °. La lame biréfringente impose un déphasage $\\varphi = \\dfrac{2\\pi\\,\\Delta n\\,e}{\\lambda}$. Le coefficient de transmission d’une cellule unique est alors $T_1 = \\cos^{2}\\!\\left(\\tfrac{\\varphi}{2}\\right)$.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Quelle combinaison de lames biréfringentes permet de sélectionner la raie Hα à 656,28 nm et quelle bande passante en résulte ?",
+    "answer": "Un filtre de Lyot constitué de trois lames de 1,5 mm, 3,0 mm et 6,0 mm d’épaisseur, encadrées par quatre polariseurs, définit une bande passante étroite d’environ 0,2 nm, suffisante pour transmettre intégralement la raie Hα centrée à 656,28 nm.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Pourquoi associe-t-on un ou deux filtres interférentiels au filtre de Lyot et quelle condition doivent-ils respecter pour la longueur d’onde Hα ?",
+    "answer": "Les filtres interférentiels servent à isoler une seule cannelure transmise par le filtre de Lyot. Ils ne laissent passer que les ondes pour lesquelles le déphasage aller-retour est un multiple de $2\\pi$ ; ils doivent donc être transparents pour un ordre entier $q$ à $\\lambda = 656{,}28\\,\\text{nm}$ et avoir une bande passante assez étroite pour atténuer les cannelures voisines d’ordre $q-1$ et $q+1$.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Comment la lentille objectif asphérique du coronographe est-elle rendue rigoureusement stigmatique en lumière Hα monochromatique ?",
+    "answer": "On applique une correction de forme à la lentille plane-sphérique afin que le chemin optique entre sa face plane et le foyer reste indépendant de la hauteur d’incidence. Cette correction dépendant de l’indice et donc de la longueur d’onde, elle devient réalisable parce que l’observation se fait strictement à 656,28 nm ; l’objectif asphérique est alors parfaitement stigmatique.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Quelle est la luminosité relative de la couronne solaire par rapport au disque solaire et au bleu du ciel diurne ?",
+    "answer": "La couronne solaire est environ un million (10⁶) de fois moins lumineuse que le disque solaire et encore cent (10²) fois moins lumineuse que le bleu du ciel.",
+    "doc_name": "Le-coronographe-de-Lyot.pdf"
+  },
+  {
+    "question": "Quel est le diamètre de la coupole qui abrite le télescope Schmidt-Cassegrain de l’observatoire de la Pointe du Diable ?",
+    "answer": "La coupole hémisphérique qui protège le Schmidt-Cassegrain mesure 3,60 m de diamètre, dimension qui détermine l’espace disponible pour la monture et le débattement du tube.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Que signifient exactement les mentions « Cassegrain » et « Schmidt » dans le nom du télescope installé à la Pointe du Diable ?",
+    "answer": "« Cassegrain » indique que le miroir principal est percé afin qu’un miroir secondaire, placé sur le même axe optique, renvoie l’image vers un foyer situé à l’arrière du tube ; « Schmidt » précise que le tube optique est fermé par une lame de verre correctrice qui élimine l’aberration sphérique du miroir principal.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quelle distance focale obtient-on pour le télescope lorsque la distance L entre les miroirs vaut 740 mm ?",
+    "answer": "En appliquant la relation $f = \\dfrac{f_1 f_2}{f_1 + f_2 - L}$ donnée dans le document, la valeur numérique pour $L = 740\\,\\text{mm}$ conduit à une distance focale d’environ 4023 mm, soit un rapport focal voisin de f/10 avec le miroir primaire de 400 mm.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quelle marge de déplacement possède le miroir secondaire et de combien varie alors la position du foyer ?",
+    "answer": "Le miroir secondaire peut être translaté sur 20 mm le long de l’axe ; cette latitude de réglage décale le plan focal du télescope sur un intervalle de 282 mm, ce qui facilite l’usage d’accessoires de longueurs différentes sans déplacer le porte-oculaire principal.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quels sont les rayons respectifs de l’ouverture claire du télescope et de l’obstruction centrale provoquée par le miroir secondaire ?",
+    "answer": "Le faisceau incident est limité par une ouverture circulaire de rayon 200 mm, tandis que le miroir secondaire crée une obstruction centrale de 70 mm de rayon.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Comment l’obstruction centrale influe-t-elle sur la figure de diffraction produite par le télescope ?",
+    "answer": "Le masque central atténue l’intensité du lobe principal de la tache d’Airy au profit du premier anneau, auquel il transfère à peu près la même quantité de lumière ; en revanche, il n’apparaît pratiquement aucune énergie lumineuse dans les anneaux d’ordre supérieur à 1.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quel est le rayon de l’image réelle de la Lune dans le plan focal du télescope ?",
+    "answer": "Pour un diamètre apparent moyen de 30′ (soit un rayon angulaire de 15′), le calcul indiqué dans le document donne un rayon d’image d’environ 18 mm sur le plan focal situé à 4023 mm de distance focale.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quel matériau est employé pour la lame de Schmidt, et quelle forme prend la loi de Cauchy qui décrit son indice dans le visible ?",
+    "answer": "La lame est taillée dans un verre borosilicate BK7 dont l’indice de réfraction suit, entre 400 nm et 750 nm, la loi de Cauchy : $n(\\lambda) = A + \\dfrac{B}{\\lambda^{2}}$ avec $A = 1{,}5047$ et $B = 4{,}21 \\times 10^{-15}\\,\\text{m}^{2}$.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quelle valeur expérimentale de la constante sans dimension K permet d’obtenir une lame de Schmidt achromatique pour ce télescope ?",
+    "answer": "L’ajustement expérimental montre qu’une valeur $K = 0,54$ assure simultanément la correction de l’aberration sphérique et la compensation de la dispersion chromatique, rendant la lame de Schmidt achromatique dans tout le visible.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Pourquoi le réglage de collimation sur ce Schmidt-Cassegrain n’entraîne-t-il pas de changement de mise au point ?",
+    "answer": "Le miroir secondaire, solidaire de la lame de Schmidt, est monté sur une rotule dont le centre coïncide exactement avec le foyer du miroir principal ; ainsi, lorsqu’on incline légèrement le secondaire pour collimater, la distance focale globale reste inchangée et la mise au point n’est pas modifiée.",
+    "doc_name": "Le-telescope-de-Schmidt-Cassegrain.pdf"
+  },
+  {
+    "question": "Quel type de télescope est installé à l’observatoire de la Pointe du Diable, quel est le diamètre de son miroir primaire et quelle est sa focale résultante ?",
+    "answer": "L’instrument est un télescope Schmidt-Cassegrain ; son miroir primaire sphérique concave mesure 400 mm de diamètre et, avec le miroir secondaire, le montage fournit une focale résultante proche de 4 m (rapport f/10).",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "De quoi se compose le contrepoids principal utilisé pour l’équilibrage autour de l’axe alpha ?",
+    "answer": "Le contrepoids principal, fixé en bout de l’axe δ, comporte deux masses simples de 10 kg et 13 kg plus un dispositif « araignée » de 3 kg sur lequel on peut ajouter des petits poids de 600 g, 700 g ou 1 200 g pour peaufiner l’équilibre.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Quel dispositif assure la synchronisation automatique entre la rotation de la coupole et la position du télescope, et comment fonctionne-t-il ?",
+    "answer": "Le « dôme tracker » réalise la synchronisation : une roue codeuse montée sur la coupole compte les tours à partir d’une position de référence repérée par un capteur inductif ; Prism compare alors cette position à celle du tube pour commander automatiquement la rotation du volet et maintenir l’alignement sur l’ouverture.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Quelle capacité de stockage possède le NAS de l’observatoire et quel niveau de redondance est appliqué ?",
+    "answer": "Le NAS Synology DS216J offre 3 To de stockage mis en miroir (redondance 1×), ce qui protège les images en cas de défaillance d’un disque ; on y accède via l’URL « https://nas.astronomie-pointedudiable.fr ».",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Quelles sont l’angle de champ et la résolution angulaire de la caméra AllSky installée début 2021 ?",
+    "answer": "La caméra AllSky ALPHEA 6CL couleur couvre un champ de 180° × 130° et délivre une résolution d’environ 3,3 minutes d’arc par pixel.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Dans quel ordre doit-on mettre sous tension les éléments électroniques avant d’utiliser le télescope ?",
+    "answer": "Il faut successivement : 1) allumer l’onduleur ; 2) mettre sous tension l’alimentation du MCMT ; 3) allumer le boîtier MCMT ; 4) allumer le boîtier de commande du focuseur.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Lors de la procédure de mise au zénith, à quel niveau de zoom doit-on afficher la carte du ciel dans Prism pour garantir la précision du réalignement ?",
+    "answer": "La carte du ciel doit être agrandie jusqu’au zoom ×16 (indiqué en bas à gauche de la fenêtre) avant de réaligner le télescope sur le zénith.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Quel appareil assure la mise au point micrométrique du télescope et quelle condition doit être respectée pour qu’il fonctionne correctement ?",
+    "answer": "La mise au point fine est assurée par le focuseur motorisé ; il n’est efficace que si la mise au point grossière réalisée directement sur le télescope est déjà correctement réglée.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "À quoi sert le doubleur VGA installé dans la coupole et est-il indispensable pour le pilotage ?",
+    "answer": "Le doubleur VGA permet de brancher un écran de contrôle supplémentaire dans la coupole pour suivre les opérations sur place ; c’est un simple confort : toutes les manœuvres peuvent être effectuées depuis la salle de commande sans cet écran.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Que doit-on faire en priorité si des conditions météorologiques défavorables (nuages, pluie ou vent fort) surviennent pendant une séance d’observation ?",
+    "answer": "En cas de météo défavorable, la première action est de fermer immédiatement le volet de la coupole ; il faut ensuite appliquer sans délai la procédure complète d’arrêt et de fermeture de l’observatoire.",
+    "doc_name": "Manuel de formation - Telescope.pdf"
+  },
+  {
+    "question": "Que devez-vous faire si, au passage au méridien, l’étoile test dérive vers le nord dans l’oculaire ?",
+    "answer": "Il faut corriger l’azimut en faisant pivoter la monture dans le sens horaire : on déplace l’extrémité supérieure de l’axe horaire vers l’est, car une dérive vers le nord indique un ΔA positif.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Lorsqu’une étoile circumpolaire observée à l’est dérive vers le nord, quel réglage faut-il réaliser sur la hauteur du pôle ?",
+    "answer": "On doit abaisser légèrement l’axe horaire, c’est-à-dire diminuer la hauteur du pôle, puisque dans cette configuration Δδ′ > 0 entraîne Δφ > 0.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Quelle dérive maximale reste tolérable quand l’erreur de hauteur du pôle est déjà inférieure à une minute d’arc ?",
+    "answer": "Lorsque |Δφ| est inférieur à 1′, la dérive résiduelle ne dépasse pas 0,3 seconde d’arc par minute de temps.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Quel défaut résiduel typique subsiste encore après une mise en station sur le « pôle réfracté » ?",
+    "answer": "Il subsiste un défaut d’environ Δφ ≃ ΔA ≃ 3 × 10⁻⁴ rad, soit proche de 1′ d’arc.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "De combien de degrés faut-il tourner chaque vis pour passer du pôle réfracté au pôle réel ?",
+    "answer": "Il faut dévisser symétriquement les deux vis de réglage d’environ 145°, soit un peu moins d’un demi-tour, pour compenser près de 2,5′ d’arc.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Quel accessoire d’observation est recommandé pour suivre la dérive pendant la méthode de Bigourdan et pourquoi ?",
+    "answer": "Un oculaire à réticule illuminé est vivement conseillé : le fil croisé sert de repère fixe et permet de voir immédiatement la direction et la vitesse de la dérive sans ambiguïté.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Quelle particularité des vis différentielles de réglage permet un déplacement très fin lors d’un tour complet ?",
+    "answer": "Chaque vis comporte deux filetages de pas différents ; la différence de pas produit un déplacement net de seulement 0,25 mm par tour, offrant ainsi un réglage extrêmement précis.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Si l’on effectue un tour complet sur la vis ouest et l’inverse sur la vis est, de combien l’axe se décale-t-il en azimut ?",
+    "answer": "Cette action déplace l’axe d’environ 6,2 minutes d’arc vers la droite (sens horaire).",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Avant de commencer les mesures, quel réglage de vitesse devez-vous confirmer sur le moteur de poursuite ?",
+    "answer": "Il faut vérifier que la monture suit exactement à la vitesse sidérale (rotation complète en 23 h 56 min 4 s), sans quoi les dérives observées seraient faussées.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Pourquoi la méthode conseille-t-elle de choisir une étoile proche du méridien et de l’équateur céleste pour corriger l’azimut ?",
+    "answer": "Au méridien, l’erreur d’azimut produit l’effet maximal tandis que l’erreur de hauteur n’intervient pas ; utiliser en plus une étoile près de l’équateur céleste augmente la sensibilité du test et facilite le diagnostic.",
+    "doc_name": "méthode-de-Bigourdan.pdf"
+  },
+  {
+    "question": "Quel type de monture et quel mécanisme d’entraînement portent les instruments de l’observatoire de la Pointe du Diable ?",
+    "answer": "Les instruments sont installés sur une monture équatoriale de type « allemande ». Chacun de ses deux axes entraîne une roue dentée en bronze de 360 dents au moyen d’une vis sans fin en inox, elle-même animée directement par un moteur pas-à-pas grâce à une liaison homocinétique à soufflet.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quelle vitesse de guidage, exprimée en micro-pas par seconde, reproduit exactement la rotation sidérale dans le système MCMT ?",
+    "answer": "Une vitesse de 106,959 µpas /s correspond rigoureusement au mouvement sidéral d’un tour complet en 23 h 56 min 04 s.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quelle précision angulaire est visée pour le pointage et à quel déplacement linéaire cela correspond-il sur la roue dentée de 200 mm de rayon ?",
+    "answer": "Le système vise une erreur de pointage inférieure à 1 minute d’arc ; avec un bras de levier de 200 mm, cela représente seulement 0,06 mm de déplacement linéaire au bord de la roue dentée.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "À quelle fraction de tour de la vis sans fin et de la roue dentée correspond un micro-pas du moteur pas-à-pas, et quelle précision angulaire théorique en résulte ?",
+    "answer": "Un micro-pas vaut $\\tfrac{1}{92\\,160}$ de tour de la vis sans fin, soit $\\tfrac{1}{360\\times92\\,160}$ de tour de la roue dentée ; cela provoque un déplacement angulaire d’environ $0{,}04''$, très inférieur à la turbulence atmosphérique habituelle.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quelles méthodes complémentaires la documentation propose-t-elle pour améliorer encore la précision de la poursuite photographique ?",
+    "answer": "Outre l’usinage soigné de la vis sans fin, elle recommande : l’utilisation d’une étoile guide, l’application d’un modèle de pointage, la correction de l’erreur périodique de la monture et la compensation de la réfraction atmosphérique.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quel dispositif assure la synchronisation entre le déplacement du télescope et la rotation de la coupole, et quelle opération d’initialisation est nécessaire ?",
+    "answer": "Le dispositif électronique « dome-tracker » relie PRISM à la coupole ; comme le couplage fonctionne en boucle ouverte, il faut d’abord déclencher le capteur d’initialisation pour référencer la position zéro de la coupole.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quels paramètres météorologiques le boîtier SENTINEL surveille-t-il, et quelles actions automatiques déclenche-t-il pour la sécurité ?",
+    "answer": "Le SENTINEL mesure la pression atmosphérique, la température, l’hygrométrie, la détection et la quantité de pluie, la vitesse et la direction du vent, la luminosité du ciel et la couverture nuageuse ; la détection de pluie ou d’un vent dépassant la vitesse critique ferme immédiatement et automatiquement le volet de la coupole grâce à son lien direct avec le dome-tracker.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quels sont les principaux avantages mécaniques d’une monture altazimutale mentionnés dans le document ?",
+    "answer": "La monture altazimutale est plus simple à construire et les contraintes appliquées à ses paliers sont moindres que sur les autres types de montures, en particulier les montures à fourche.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Pourquoi la monture équatoriale allemande de l’observatoire nécessite-t-elle un contrepoids, et quelle conséquence cela a-t-il sur la masse mise en mouvement ?",
+    "answer": "L’axe optique étant déporté sur une monture équatoriale allemande, un contrepoids est indispensable pour équilibrer le tube ; il en résulte un doublement de la masse à déplacer lors de tout mouvement du télescope.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quelle valeur de la durée du jour sidéral $T_{\\text{sid}}$ est utilisée dans la formule de l’angle horaire fournie par le document ?",
+    "answer": "La formule emploie $T_{\\text{sid}} = 23\\,\\text{h}\\;56\\,\\text{min}\\;4,09\\,\\text{s}$.",
+    "doc_name": "Pointage-et-suivi-automatiques.pdf"
+  },
+  {
+    "question": "Quelle alimentation électrique (tension, courant et connecteur) est requise pour faire fonctionner correctement la caméra STF-8300 ?",
+    "answer": "La STF-8300 doit être alimentée en courant continu de 9 V à 14 V capable de fournir 3 A, via un jack verrouillable centre-positif modèle Switchcraft S760K (Ø 5,5 / 2,0 mm) qui évite toute inversion de polarité.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quelle est la longueur maximale du câble USB fourni et quelles solutions le manuel recommande-t-il pour dépasser cette distance ?",
+    "answer": "Le câble USB 2 fourni mesure 15 pieds, soit environ 4,6 m ; pour aller plus loin, le manuel conseille d’utiliser des prolongateurs actifs de 15 pieds chaînés, un hub placé à 15 pieds (gagnant encore 15 pieds) ou des prolongateurs longue distance spécialisés comme ceux d’Icron.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quel écart de température maximal le refroidissement thermo-électrique (TE) de la STF-8300 peut-il atteindre et quelle précision de régulation assure le système ?",
+    "answer": "Le module TE peut abaisser la température du capteur jusqu’à 40 °C en dessous de l’ambiance, puis la maintenir autour du point de consigne avec une stabilité d’environ ± 0,1 °C, même si l’affichage interne ne varie que par pas de 0,5 °C.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Pourquoi le manuel interdit-il de brancher ou débrancher la prise d’alimentation lorsque l’adaptateur est sous tension (« hot-plug »), et que faut-il faire à la place ?",
+    "answer": "Le connecteur d’alimentation n’est pas prévu pour être enfiché sous tension ; un branchement ou retrait à chaud risque d’endommager définitivement la caméra. Il faut donc couper l’alimentation secteur ou batterie avant de connecter ou retirer la fiche verrouillable.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quels cavaliers près du port télescope permettent 1) de relier le signal Common à la masse et 2) de fournir la tension brute 12 V sur la broche Special ?",
+    "answer": "Le cavalier J9 broches 1-2 met le signal Common au négatif de l’alimentation. Le cavalier J9 broches 3-4 applique la tension positive brute (~ 12 V) sur la broche Special pour alimenter, par exemple, un boîtier relais externe ; il doit être retiré si l’on raccorde directement un télescope.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quelle procédure précise le manuel pour régénérer le bouchon dessiccant lorsqu’un début de givre apparaît sur le capteur ?",
+    "answer": "Dévisser le bouchon dessiccant du flanc opposé aux connecteurs, retirer son joint torique et obturer le trou avec la vis fournie. Cuire ensuite le contenant 4 h à 175 °C (350 °F). Après refroidissement, remettre le joint, revisser le bouchon et attendre une à deux heures pour que la caméra redevienne sans givre (24–48 h si plusieurs cycles sont nécessaires).",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Selon les spécifications, quel est le courant d’obscurité typique à −10 °C et quelle est la capacité de pleine puits d’un pixel du KAF-8300 ?",
+    "answer": "À −10 °C, le courant d’obscurité typique est de 0,002 électron / pixel / seconde et la capacité de pleine puits d’un pixel atteint environ 25 500 électrons.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Dans CCDOps, quel réglage permet de réutiliser automatiquement une image noire existante lors d’une série d’acquisitions et sous quelles conditions cette réutilisation est-elle faite ?",
+    "answer": "Dans « Camera Setup », placer « Reuse dark frames » sur « Yes ». Le logiciel réemploiera alors une image noire dès qu’elle correspond à la même durée d’exposition et à la même température CCD que l’image en cours.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quel mode de la commande « Focus » augmente fortement la cadence d’acquisition en ne téléchargeant qu’une zone autour de l’étoile, et comment cela fonctionne-t-il ?",
+    "answer": "Le « Planet mode » : après une première image plein champ, on trace un rectangle autour de l’étoile ; les captures suivantes ne numérisent et ne transfèrent que cette fenêtre, ce qui accélère la cadence proportionnellement à la réduction de surface.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Citez trois accessoires optionnels spécifiquement proposés pour la STF-8300 dans le manuel.",
+    "answer": "Parmi les accessoires dédiés : 1) les roues à filtres FW5-8300 (5 positions, filtres 36 mm) et FW8-8300 (8 positions) ; 2) l’OAG-8300, guidage hors-axe à 7 lentilles qui double le champ de l’autoguideur ST-i ; 3) la caméra ST-i utilisable comme autoguideur ou caméra planétaire.",
+    "doc_name": "stf-8300_manual_12.pdf"
+  },
+  {
+    "question": "Quel numéro de port HTTP le guide indique-t-il pour accéder par défaut à DSM sur un Synology NAS ?",
+    "answer": "Le guide précise que l’on accède à DSM en tapant « http://<adresse_IP_du_Synology>:5000 » ; le port HTTP par défaut est donc le 5000 (le port 5001 étant réservé à l’accès HTTPS).",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Comment réinitialiser le mot de passe du compte « admin » selon la procédure décrite dans le guide ?",
+    "answer": "Appuyer sur le bouton RESET à l’arrière du Synology NAS et le maintenir enfoncé pendant 4 secondes jusqu’à entendre un bip ; le mot de passe du compte « admin » est alors effacé et l’adresse IP ainsi que le DNS repassent aux valeurs par défaut.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quel est le nombre maximal d’instantanés que l’on peut créer pour un même iSCSI LUN ?",
+    "answer": "Un iSCSI LUN peut contenir jusqu’à 256 instantanés simultanés.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quelle est, d’après le guide, la taille maximale d’un volume créé dans un RAID Group destiné à un unique volume ou LUN ?",
+    "answer": "La capacité maximale qu’un tel volume peut atteindre est de 200 To.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Combien de disques durs au minimum faut-il installer pour créer un volume RAID 5 ?",
+    "answer": "La configuration RAID 5 requiert au moins trois disques durs.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quelle fonction doit être activée pour améliorer les performances de lecture/écriture et prolonger la durée de vie d’un volume constitué uniquement de SSD ?",
+    "answer": "Il faut activer la fonction « SSD TRIM », spécialement prévue pour les volumes composés exclusivement de SSD.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quelles sont les deux formes d’URL proposées pour se connecter à DSM via un navigateur en utilisant le nom ou l’adresse IP du serveur ?",
+    "answer": "Le guide recommande d’utiliser soit « http://Synology_Server_IP:5000 », soit « http://Synology_Server_Name:5000/ » (ou « http://Synology_Server_Name.local:5000/ » sur macOS).",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quel widget permet de surveiller en temps réel l’utilisation du CPU, de la mémoire et du réseau sur le bureau DSM ?",
+    "answer": "Le widget « Moniteur de ressources » affiche en temps réel la charge processeur, l’usage mémoire et les débits réseau.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Quelle mesure de sécurité supplémentaire peut-on activer pour qu’un utilisateur DSM doive saisir un code unique en plus de son mot de passe ?",
+    "answer": "La « vérification en 2 étapes » (authentification TOTP) peut être activée ; à chaque connexion, l’utilisateur doit alors saisir le mot de passe **et** le code à usage unique généré par son application d’authentification mobile.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  },
+  {
+    "question": "Lorsqu’on étend un volume SHR en remplaçant des disques durs de capacités différentes, quelle règle de taille doit respecter chaque nouveau disque ?",
+    "answer": "Chaque disque de remplacement doit avoir une capacité au moins égale à celle du plus gros disque déjà présent, et l’on commence par remplacer les plus petits disques afin d’optimiser l’utilisation de la capacité totale.",
+    "doc_name": "Syno_UsersGuide_NAServer_fra.pdf"
+  }
+]
+

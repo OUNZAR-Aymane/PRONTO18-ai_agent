@@ -21,7 +21,7 @@ class Embedder:
             self.document_index = {}
     def load_and_split(self,**args):
         pass 
-    def embed(self,pdf_path,store,wait_time=30,save=False):
+    def embed(self,pdf_path,store,save=False):
         """
         Create embeddings from PDF content and store them in a FAISS vector index.
         
@@ -44,9 +44,7 @@ class Embedder:
             # Create a new FAISS vector store
             embeddings = MistralAIEmbeddings(
                 model="mistral-embed",
-                mistral_api_key=self.api_key or os.getenv("MISTRAL_API_KEY"),
-                wait_time=wait_time,
-                max_retries=10
+                mistral_api_key=self.api_key,
             )
             store = FAISS.from_documents(chunks, embeddings)
         else : 
@@ -57,7 +55,7 @@ class Embedder:
             store.save_local(str(self.faiss_index_path))
             # Enregistrer la correspondance document ↔ doc_id
             self.document_index[os.path.basename(pdf_path)] = doc_id
-            with open(self.document_index_path, "w") as f:
+            with open(self.document_index_path, "w", encoding="utf-8") as f:
                 json.dump(self.document_index, f, indent=2)
         return store
 
@@ -99,7 +97,7 @@ class Embedder:
         """
         embeddings = MistralAIEmbeddings(
             model="mistral-embed",
-            mistral_api_key=self.api_key or os.getenv("MISTRAL_API_KEY"),
+            mistral_api_key=self.api_key,
         )
 
         store = FAISS.load_local(

@@ -15,7 +15,6 @@ from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
 import torch, types
-
 torch.classes.__path__ = types.SimpleNamespace(_path=[])
 load_dotenv()
 
@@ -67,7 +66,7 @@ authenticator = stauth.Authenticate(str(config_path))
 
 with st.sidebar:
     st.subheader("Gestion des utilisateurs")
-    with st.expander("Actions", expanded=True):
+    with st.expander("Options de gestion de compte", expanded=True):
         action = st.radio(
             "Sélectionnez une action",
             ["Se connecter", "Créer un compte", "Changer le mot de passe", "Modifier mes informations", "Mot de passe oublié", "Nom d'utilisateur oublié", "Changer le rôle d'un utilisateur"],
@@ -350,7 +349,6 @@ elif st.session_state.get('authentication_status'):
                     embedder = EmbedderWithOcr(api_key)
                 elif selected_embedder == "Multimodal embedder":
                     embedder = MultimodalEmbedder(api_key)
-                wait_time = int(st.text_input("wait time (optional) : ",value=30))
                 add_permanently = False
                 if "admin" in user_roles:
                     add_permanently = st.checkbox("Ajouter un document de manière permanente")
@@ -364,7 +362,7 @@ elif st.session_state.get('authentication_status'):
                             st.success(f"Fichier enregistré dans : {save_path}")
                         with st.spinner("Indexation du document…"):
                             # Process the document
-                            st.session_state.vector = embedder.embed(save_path, st.session_state.vector, wait_time=wait_time, save=add_permanently)
+                            st.session_state.vector = embedder.embed(save_path, st.session_state.vector, save=add_permanently)
                             st.session_state.chain = build_chains(
                                 vector=st.session_state.vector,
                                 model=model,
@@ -422,9 +420,7 @@ elif st.session_state.get('authentication_status'):
             else:
                 st.info("Aucun document disponible.")
             st.markdown("---")
-            
-        st.subheader("🛠️ Espace responsable")
-        show_admin = st.checkbox("Afficher toutes les discussions")
+
 
     # Display chat history
     st.header("Conversation")
@@ -471,37 +467,3 @@ elif st.session_state.get('authentication_status'):
         # Save chat history after each exchange
         save_chat_history()
 
-    # --- Admin Space ---
-    if show_admin:
-        st.markdown("## 🔍 Historique complet des utilisateurs")
-        
-        # List all user directories
-        user_directories = [d for d in os.listdir(HISTORY_DIR) if os.path.isdir(os.path.join(HISTORY_DIR, d))]
-        
-        if not user_directories:
-            st.info("Aucun utilisateur enregistré pour le moment.")
-        else:
-            selected_user = st.selectbox("Choisissez un utilisateur :", user_directories)
-            
-            if selected_user:
-                user_dir = os.path.join(HISTORY_DIR, selected_user)
-                history_files = [f for f in os.listdir(user_dir) if f.endswith(".json")]
-                
-                if not history_files:
-                    st.info(f"Aucune discussion enregistrée pour {selected_user}.")
-                else:
-                    selected_file = st.selectbox("Choisissez une conversation :", history_files)
-                    
-                    if selected_file:
-                        try:
-                            with open(os.path.join(user_dir, selected_file), "r", encoding="utf-8") as f:
-                                data = json.load(f)
-                                messages = data.get("messages", [])
-                                st.markdown(f"### 💬 Conversation de `{selected_user}` - {selected_file}")
-
-                                for msg in messages:
-                                    role = "👤 Utilisateur" if msg["role"] == "user" else "🤖 Assistant"
-                                    st.markdown(f"**{role}** : {msg['content']}")
-                                    st.markdown("---")
-                        except Exception as e:
-                            st.error(f"Erreur lors du chargement de {selected_file} : {e}")

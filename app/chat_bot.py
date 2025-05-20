@@ -56,8 +56,8 @@ def create_prompt():
     # System instruction in French for the astronomy observatory chatbot
     system_instruction = """Tu es un ChatBot qui va répondre aux questions des utilisateurs d'observatoire astronomique de l'école IMT ATlantique campus de Brest.\
         Si l'utilisateur pose des questions sur l'observatoire. Tu doit répondre en se basant seulement sur les données fournis.\
-        Respecter toujours la format LaTex.\
-        Écris toujours les formules mathématiques en les entourant de $ pour qu'elles soient compilées en format LaTeX. Au lieu d'écrire [formule en LaTex] écrit $ formule en LaTex $\
+        Veiller à que tous les formules mathématique sont bien formaté pour LaTeX. Et vérifier cela avant d'envoyer ta réponse.\
+        Si l'utilisateur ne demande pas des formules mathématiques, tu ne dois pas en fournir.\
         Si tu n'arrive pas a trouver l'onformations tu dit que tu ne sais pas.\
         Répond toujours en français.\
         Utiliser le context : {context}"""
@@ -91,11 +91,18 @@ def get_response(user_input: str, chat_history: list, vector, chain):
 
 if __name__ == '__main__' :
     chat_history = []
+    load_dotenv()
+    api_key = os.getenv("MISTRAL_API_KEY")
+    model, embedding_fn = model_and_embedding_function(api_key)
+    vector = load_vector_store(Path("faiss_index"), embedding_fn)
+    prompt = create_prompt()
+    contextual_prompt = create_contextualize_q_system_prompt()
+    chain = build_chains(vector, model, prompt, contextual_prompt)
     while True:
         user_input = input("user : ")
         while True:
             try:
-                response =  get_response(user_input,chat_history)
+                response =  get_response(user_input,chat_history,vector,chain)
             except Exception as e :
                 print(e)
                 continue

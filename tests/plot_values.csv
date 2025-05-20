@@ -1,0 +1,41 @@
+metric,doc_name,rag,no_rag
+latency,Le-coronographe-de-Lyot.pdf,9.43193552494049,4.484856057167053
+latency,Le-telescope-de-Schmidt-Cassegrain.pdf,20.41369559764862,3.157780885696411
+latency,Manuel de formation - Telescope.pdf,29.172960424423216,1.982711958885193
+latency,Pointage-et-suivi-automatiques.pdf,32.70483148097992,2.043397617340088
+latency,Syno_UsersGuide_NAServer_fra.pdf,8.436589646339417,1.734900999069214
+latency,astro-procedures-resume-anon.pdf,8.42835500240326,2.5757944107055666
+latency,méthode-de-Bigourdan.pdf,17.499129438400267,3.240367126464844
+latency,stf-8300_manual_12.pdf,36.31604976654053,0.7923673629760742
+note_correct,Le-coronographe-de-Lyot.pdf,4.1,3.1
+note_correct,Le-telescope-de-Schmidt-Cassegrain.pdf,4.8,2.2
+note_correct,Manuel de formation - Telescope.pdf,4.6,1.8
+note_correct,Pointage-et-suivi-automatiques.pdf,4.1,1.6
+note_correct,Syno_UsersGuide_NAServer_fra.pdf,5.0,1.7
+note_correct,astro-procedures-resume-anon.pdf,2.9,1.8
+note_correct,méthode-de-Bigourdan.pdf,3.7,1.8
+note_correct,stf-8300_manual_12.pdf,3.4,0.8
+note_relevance,Le-coronographe-de-Lyot.pdf,4.9,4.6
+note_relevance,Le-telescope-de-Schmidt-Cassegrain.pdf,4.7,3.7
+note_relevance,Manuel de formation - Telescope.pdf,4.9,3.1
+note_relevance,Pointage-et-suivi-automatiques.pdf,4.3,2.7
+note_relevance,Syno_UsersGuide_NAServer_fra.pdf,4.3,1.9
+note_relevance,astro-procedures-resume-anon.pdf,3.5,3.7
+note_relevance,méthode-de-Bigourdan.pdf,4.2,3.7
+note_relevance,stf-8300_manual_12.pdf,3.6,1.3
+note_faithfulness,Le-coronographe-de-Lyot.pdf,4.8,3.7
+note_faithfulness,Le-telescope-de-Schmidt-Cassegrain.pdf,5.0,2.3
+note_faithfulness,Manuel de formation - Telescope.pdf,4.9,2.4
+note_faithfulness,Pointage-et-suivi-automatiques.pdf,4.9,2.8
+note_faithfulness,Syno_UsersGuide_NAServer_fra.pdf,4.9,1.7
+note_faithfulness,astro-procedures-resume-anon.pdf,4.3,1.8
+note_faithfulness,méthode-de-Bigourdan.pdf,4.1,2.5
+note_faithfulness,stf-8300_manual_12.pdf,4.0,1.8
+semantic_sim,Le-coronographe-de-Lyot.pdf,0.7031614512205124,0.6468351185321808
+semantic_sim,Le-telescope-de-Schmidt-Cassegrain.pdf,0.7081654310226441,0.5348376080393791
+semantic_sim,Manuel de formation - Telescope.pdf,0.7638590276241303,0.5722593665122986
+semantic_sim,Pointage-et-suivi-automatiques.pdf,0.7047106638550759,0.4734334096312523
+semantic_sim,Syno_UsersGuide_NAServer_fra.pdf,0.8065290689468384,0.4608487203717232
+semantic_sim,astro-procedures-resume-anon.pdf,0.6076275169849396,0.5333075016736984
+semantic_sim,méthode-de-Bigourdan.pdf,0.53984936773777,0.4975085899233818
+semantic_sim,stf-8300_manual_12.pdf,0.6218709126114845,0.3134111359715462
