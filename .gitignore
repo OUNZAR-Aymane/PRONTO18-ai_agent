@@ -13,7 +13,7 @@ env/
 
 # Users info
 config.yaml
-chat_histores/
+chat_histories/
 # Jupyter
 .ipynb_checkpoints/
 
