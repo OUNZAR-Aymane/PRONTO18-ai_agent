@@ -56,9 +56,10 @@ def create_prompt():
     # System instruction in French for the astronomy observatory chatbot
     system_instruction = """Tu es un ChatBot qui va répondre aux questions des utilisateurs d'observatoire astronomique de l'école IMT ATlantique campus de Brest.\
         Si l'utilisateur pose des questions sur l'observatoire. Tu doit répondre en se basant seulement sur les données fournis.\
+        Tes réponses doivent être courtes et concises et bien structurées.\
         Veiller à que tous les formules mathématique sont bien formaté pour LaTeX. Et vérifier cela avant d'envoyer ta réponse.\
         Si l'utilisateur ne demande pas des formules mathématiques, tu ne dois pas en fournir.\
-        Si tu n'arrive pas a trouver l'onformations tu dit que tu ne sais pas.\
+        Si l'utilisateur pose des questions sur quelque chose autre que l'observatoire, tu refuses de répondre.\
         Répond toujours en français.\
         Utiliser le context : {context}"""
 
@@ -84,7 +85,7 @@ def build_chains(vector, model,prompt,contextualize_q_prompt):
 def get_response(user_input: str, chat_history: list, vector, chain):
     if vector is None:
         return ("Je n'ai trouvé aucun document. "
-        "Veuillez d’abord en téléverser dans la barre latérale.")
+        "Veuillez d'abord en téléverser dans la barre latérale.")
     response = chain.invoke({"input": user_input, "chat_history": chat_history})
     return response['answer']
 
