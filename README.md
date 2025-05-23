@@ -210,7 +210,7 @@ Pour créer un compte, il faut fournir les informations suivantes :
     - Contenir au moins un caractère spécial (@$!%*?&)
 
 Enfin, il faut remplir le Captcha et cliquer sur Register.
-Tous les utilisateurs sont attribués le rôle "utilisateur" par défaut.
+Tous les utilisateurs sont attribués le rôle "utilisateur" par défaut. Le responsable qui s'occupera de l'installation du chatbot sur l'ordinateur de l'observatoire doit changer manuellement son rôle de "utilisateur" à "admin" dans le fichier `config.yaml`.
 
 ### Comment se connecter ?
 
