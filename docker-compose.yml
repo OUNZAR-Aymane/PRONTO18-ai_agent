@@ -3,7 +3,6 @@ services:
     build: .
     volumes:
       - .:/workspace
-    env_file: .env
     working_dir: /workspace
     stdin_open: true
     tty: true
@@ -13,7 +12,6 @@ services:
     command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
     volumes:
       - .:/workspace
-    env_file: .env
     working_dir: /workspace
     ports:
       - "8888:8888"
@@ -23,7 +21,6 @@ services:
     command: streamlit run app/interface.py --browser.gatherUsageStats false --server.port 8501
     volumes:
       - .:/workspace
-    env_file: .env
     working_dir: /workspace
     ports:
       - "8501:8501"

@@ -22,5 +22,3 @@
     
     # ---- default command ----
     CMD ["bash"]
-    
-RUN apt-get update && apt-get install -y nano

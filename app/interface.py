@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import torch, types
 torch.classes.__path__ = types.SimpleNamespace(_path=[])
-load_dotenv()
+
 
 # Page configuration
 st.set_page_config(
@@ -28,21 +28,19 @@ st.set_page_config(
     }
 )
 
+load_dotenv(override=True)
+
+
 def send_email(receiver_email, subject, body):
     smtp_host = "smtp.gmail.com"
     smtp_port = 587
     smtp_user = os.getenv("SMTP_USER")
-    print("SMTP_USER:", smtp_user)
     smtp_pass = os.getenv("SMTP_PASSWORD")
-    print("SMTP_PASSWORD:", smtp_pass)
     server = smtplib.SMTP(smtp_host, smtp_port)
 
     server.connect(smtp_host, smtp_port)
-    print("Connected.")
     server.starttls()
-    print("TLS started.")
     server.login(smtp_user, smtp_pass)
-    print("Login successful.")
 
     msg = MIMEText(body)
     msg["Subject"] = subject
@@ -50,13 +48,13 @@ def send_email(receiver_email, subject, body):
     msg["To"] = receiver_email
 
     server.send_message(msg)
-    print("Email sent successfully.")
     server.quit()
 
 
 
 # Load environment variables
 api_key = os.getenv("MISTRAL_API_KEY")
+print(f"MISTRAL_API_KEY is {'set' if api_key else 'not set'}")
 
 config_path = Path(__file__).resolve().parent.parent / "config.yaml"
 
@@ -176,7 +174,7 @@ elif st.session_state.get('authentication_status') is None:
 # --- Main application logic ---
 elif st.session_state.get('authentication_status'):
     if api_key is None:
-        raise st.error("MISTRAL_API_KEY not set in environment")
+        raise st.error("MISTRAL_API_KEY n'est pas défini dans les variables d'environnement")
 
     # Directory paths
     DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
@@ -297,7 +295,7 @@ elif st.session_state.get('authentication_status'):
             if history_files:
                 selected_history = st.selectbox(
                     "Charger une conversation précédente:",
-                    options=history_files,
+                    options=[os.path.splitext(f)[0] for f in history_files],
                     index=None,
                     placeholder="— choisir une conversation —"
                 )
@@ -351,14 +349,14 @@ elif st.session_state.get('authentication_status'):
                     embedder = MultimodalEmbedder(api_key)
                 add_permanently = False
                 if "admin" in user_roles:
-                    add_permanently = st.checkbox("Ajouter un document de manière permanente")
+                    add_permanently = st.checkbox("Ajouter le document de manière permanente")
                 if st.button("Traiter", key="process_button"):
                     try:
                         # Build destination path
                         save_path = os.path.join(DOCS_DIR, pdf.name)
                         with open(save_path, "wb") as f:
                             f.write(pdf.read())
-                        if "admin" in user_roles : 
+                        if "admin" in user_roles:
                             st.success(f"Fichier enregistré dans : {save_path}")
                         with st.spinner("Indexation du document…"):
                             # Process the document
