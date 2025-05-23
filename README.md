@@ -40,7 +40,6 @@ Il utilise un pipeline **RAG** (Retrieval-Augmented Generation) combinant :
 
 Le tout est **conteneurisé avec Docker** afin d'assurer portabilité, reproductibilité et facilité de déploiement.
 
----
 
 ## Fonctionnalités
 
@@ -70,7 +69,6 @@ cd ai-agent
 
 Cette étape permet de fournir les variables d'environnement nécessaires au bon fonctionnement du chatbot.
 
----
 
 #### 3.1 Créer une clé API Mistral
 
@@ -103,6 +101,7 @@ Suivez les étapes officielles ici :
 À la racine du projet (dans le dossier source), créez un fichier nommé `.env` contenant vos clés privées :
 
 ```env
+MISTRAL_API_KEY = "votre_clé_mistral_ici"
 MISTRAL_API_KEY = "votre_clé_mistral_ici"
 HF_TOKEN = "votre_token_huggingface_ici"
 SMTP_USER = "votre.email@gmail.com"
