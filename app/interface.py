@@ -54,7 +54,6 @@ def send_email(receiver_email, subject, body):
 
 # Load environment variables
 api_key = os.getenv("MISTRAL_API_KEY")
-print(f"MISTRAL_API_KEY is {'set' if api_key else 'not set'}")
 
 config_path = Path(__file__).resolve().parent.parent / "config.yaml"
 
