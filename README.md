@@ -61,7 +61,7 @@ Le tout est **conteneurisé avec Docker** afin d'assurer portabilité, reproduct
 ### 2. Cloner le dépôt
 
 ```bash
-git clone https://gitlab-df.imt-atlantique.fr/a24ounza/ai-agent.git
+git clone https://gitlab.imt-atlantique.fr/csu/AstroAI.git
 cd ai-agent
 ```
 
