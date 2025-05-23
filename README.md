@@ -91,8 +91,7 @@ Cette étape permet de fournir les variables d'environnement nécessaires au bon
 
 #### 3.2 (Optionnel) Créer un token Hugging Face
 
-Ce token permet d'améliorer certaines fonctionnalités du ChatBot (accès à certains modèles pré-entraînés).  
-Le ChatBot fonctionnera même sans, mais son utilisation est recommandée.
+Ce token n'est pas nécessaire pour le fonctionnement du chatbot mais il peut peut en améliorer les performances. En plus, on en aura besoin dans le fichier [`tests/rag_tests.ipynb`](tests/rag_tests.ipynb) pour calculer la similarité sémantique.
 
 Suivez les étapes officielles ici :  
 [Créer un access token Hugging Face](https://huggingface.co/docs/hub/security-tokens)
