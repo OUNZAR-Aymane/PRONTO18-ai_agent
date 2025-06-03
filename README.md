@@ -334,7 +334,7 @@ Une fois fait, deux champs vont apparaître :
 ---
 **⚠️ Remarque :**
 
-Les utilisateurs avec le rôle "utilisateur" peuvent ajouter un document que temporairement pendant leur session. Seuls les utilisateurs avec le rôle "admin" peuvent ajouter des documents de manière permanente en cochant la case "Ajouter le document de manière permanente".
+Les utilisateurs avec le rôle "utilisateur" ne peuvent ajouter un document que temporairement pendant leur session. Seuls les utilisateurs avec le rôle "admin" peuvent ajouter des documents de manière permanente en cochant la case "Ajouter le document de manière permanente".
 
 ---
 
